@@ -3,11 +3,16 @@
 
 struct Grid
 {
+    unsigned width;
+    unsigned height;
 };
 
-Grid* allocateGrid(void)
+Grid* allocateGrid(unsigned cols, unsigned rows)
 {
     Grid* grid = safeMalloc(sizeof(struct Grid));
+
+    grid->width = cols;
+    grid->height = rows;
 
     return grid;
 }
@@ -15,4 +20,14 @@ Grid* allocateGrid(void)
 void freeGrid(Grid* const grid)
 {
     free(grid);
+}
+
+unsigned gridWidth(const Grid* const grid)
+{
+    return grid->width;
+}
+
+unsigned gridHeight(const Grid* const grid)
+{
+    return grid->height;
 }
