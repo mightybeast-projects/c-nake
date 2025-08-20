@@ -4,7 +4,7 @@
 
 typedef struct Tile Tile;
 
-Tile* allocateTile(unsigned i, unsigned j);
+Tile* allocateTile(const unsigned i, const unsigned j);
 void freeTile(Tile* const tile);
 
 unsigned tileI(const Tile* const tile);

@@ -8,35 +8,23 @@ struct Grid
     Tile*** tiles;
 };
 
-Grid* allocateGrid(unsigned cols, unsigned rows)
+static Tile*** allocateTiles(const unsigned cols, const unsigned rows);
+static void freeTiles(Grid* const grid);
+
+Grid* allocateGrid(const unsigned cols, const unsigned rows)
 {
     Grid* grid = safeMalloc(sizeof(struct Grid));
 
     grid->width = cols;
     grid->height = rows;
-
-    grid->tiles = safeMalloc(sizeof(Tile**) * cols);
-
-    for (int i = 0; i < cols; i++) {
-        grid->tiles[i] = safeMalloc(sizeof(Tile*) * rows);
-
-        for (int j = 0; j < rows; j++)
-            grid->tiles[i][j] = allocateTile(i, j);
-    }
+    grid->tiles = allocateTiles(cols, rows);
 
     return grid;
 }
 
 void freeGrid(Grid* const grid)
 {
-    for (int i = 0; i < gridWidth(grid); i++) {
-        for (int j = 0; j < gridHeight(grid); j++)
-            freeTile(grid->tiles[i][j]);
-
-        free(grid->tiles[i]);
-    }
-
-    free(grid->tiles);
+    freeTiles(grid);
     free(grid);
 }
 
@@ -53,4 +41,30 @@ unsigned gridHeight(const Grid* const grid)
 Tile*** gridTiles(const Grid* const grid)
 {
     return grid->tiles;
+}
+
+static Tile*** allocateTiles(const unsigned cols, const unsigned rows)
+{
+    Tile*** tiles = safeMalloc(sizeof(Tile**) * cols);
+
+    for (int i = 0; i < cols; i++) {
+        tiles[i] = safeMalloc(sizeof(Tile*) * rows);
+
+        for (int j = 0; j < rows; j++)
+            tiles[i][j] = allocateTile(i, j);
+    }
+
+    return tiles;
+}
+
+static void freeTiles(Grid* const grid)
+{
+    for (int i = 0; i < gridWidth(grid); i++) {
+        for (int j = 0; j < gridHeight(grid); j++)
+            freeTile(grid->tiles[i][j]);
+
+        free(grid->tiles[i]);
+    }
+
+    free(grid->tiles);
 }

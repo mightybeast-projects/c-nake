@@ -8,7 +8,7 @@ struct Tile
     bool hasFood;
 };
 
-Tile* allocateTile(unsigned i, unsigned j)
+Tile* allocateTile(const unsigned i, const unsigned j)
 {
     if ((int)i < 0 || (int)j < 0)
         return NULL;
