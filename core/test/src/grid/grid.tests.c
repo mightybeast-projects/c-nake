@@ -1,12 +1,15 @@
 #include "grid.h"
 #include "grid.tests.h"
+#include "stdio.h"
 #include "unity.h"
 
+static unsigned width = 10;
+static unsigned height = 15;
 static Grid* grid;
 
 void setUpGrid(void)
 {
-    grid = allocateGrid(10, 15);
+    grid = allocateGrid(width, height);
 }
 
 void tearDownGrid(void)
@@ -14,20 +17,29 @@ void tearDownGrid(void)
     freeGrid(grid);
 }
 
-void Grid_Allocation_Should_Return_New_Grid()
+void Grid_Allocation_Should_Return_New_Grid(void)
 {
     TEST_ASSERT_NOT_NULL(grid);
 }
 
-void Allocated_Grid_Should_Have_Passed_Width_And_Height()
+void Allocated_Grid_Should_Have_Passed_Width_And_Height(void)
 {
-    TEST_ASSERT_EQUAL_UINT(10, gridWidth(grid));
-    TEST_ASSERT_EQUAL_UINT(15, gridHeight(grid));
+    TEST_ASSERT_EQUAL_UINT(width, gridWidth(grid));
+    TEST_ASSERT_EQUAL_UINT(height, gridHeight(grid));
 }
 
-void Allocated_Grid_Should_Have_Allocated_Tiles()
+void Allocated_Grid_Should_Have_Allocated_Tiles(void)
 {
     TEST_ASSERT_NOT_NULL(gridTiles(grid));
+}
+
+void Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height(void)
+{
+    Tile*** tiles = gridTiles(grid);
+
+    for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
+            TEST_ASSERT_NOT_NULL(tiles[i][j]);
 }
 
 void runGridTests(void)
@@ -36,4 +48,5 @@ void runGridTests(void)
 
     RUN_TEST(Allocated_Grid_Should_Have_Passed_Width_And_Height);
     RUN_TEST(Allocated_Grid_Should_Have_Allocated_Tiles);
+    RUN_TEST(Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height);
 }
