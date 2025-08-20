@@ -9,6 +9,9 @@ struct Tile
 
 Tile* allocateTile(unsigned i, unsigned j)
 {
+    if ((int)i < 0 || (int)j < 0)
+        return NULL;
+
     Tile* tile = safeMalloc(sizeof(struct Tile));
 
     tile->i = i;
