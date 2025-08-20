@@ -5,6 +5,7 @@ struct Tile
 {
     unsigned i;
     unsigned j;
+    bool hasFood;
 };
 
 Tile* allocateTile(unsigned i, unsigned j)
@@ -16,6 +17,7 @@ Tile* allocateTile(unsigned i, unsigned j)
 
     tile->i = i;
     tile->j = j;
+    tile->hasFood = false;
 
     return tile;
 }
@@ -33,4 +35,14 @@ unsigned tileI(const Tile* const tile)
 unsigned tileJ(const Tile* const tile)
 {
     return tile->j;
+}
+
+bool tileHasFood(const Tile* const tile)
+{
+    return tile->hasFood;
+}
+
+void setTileFood(Tile* const tile, bool value)
+{
+    tile->hasFood = value;
 }

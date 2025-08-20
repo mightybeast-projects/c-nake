@@ -19,12 +19,6 @@ void Tile_Allocation_Should_Return_New_Tile(void)
     TEST_ASSERT_NOT_NULL(tile);
 }
 
-void Allocated_Tile_Should_Have_Passed_Indexes(void)
-{
-    TEST_ASSERT_EQUAL_UINT(1, tileI(tile));
-    TEST_ASSERT_EQUAL_UINT(2, tileJ(tile));
-}
-
 void Tile_Allocation_Should_Not_Return_New_Tile_If_Indexes_Are_Negative(void)
 {
     Tile* tile = allocateTile(-1, -1);
@@ -34,9 +28,31 @@ void Tile_Allocation_Should_Not_Return_New_Tile_If_Indexes_Are_Negative(void)
     freeTile(tile);
 }
 
+void Allocated_Tile_Should_Have_Passed_Indexes(void)
+{
+    TEST_ASSERT_EQUAL_UINT(1, tileI(tile));
+    TEST_ASSERT_EQUAL_UINT(2, tileJ(tile));
+}
+
+void Allocated_Tile_Should_Not_Have_Food(void)
+{
+    TEST_ASSERT_FALSE(tileHasFood(tile));
+}
+
+void Tile_Should_Have_Food_After_Setting_It(void)
+{
+    setTileFood(tile, true);
+
+    TEST_ASSERT_TRUE(tileHasFood(tile));
+}
+
 void runTileTests(void)
 {
     RUN_TEST(Tile_Allocation_Should_Return_New_Tile);
-    RUN_TEST(Allocated_Tile_Should_Have_Passed_Indexes);
     RUN_TEST(Tile_Allocation_Should_Not_Return_New_Tile_If_Indexes_Are_Negative);
+
+    RUN_TEST(Allocated_Tile_Should_Have_Passed_Indexes);
+    RUN_TEST(Allocated_Tile_Should_Not_Have_Food);
+
+    RUN_TEST(Tile_Should_Have_Food_After_Setting_It);
 }
