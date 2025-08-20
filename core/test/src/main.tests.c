@@ -1,20 +1,22 @@
 #include "stdbool.h"
-#include "tmp.tests.h"
+#include "tile.tests.h"
 #include "unity.h"
 
 void setUp(void)
 {
+    setUpTile();
 }
 
 void tearDown(void)
 {
+    tearDownTile();
 }
 
 int main(void)
 {
     UNITY_BEGIN();
 
-    runTMPTests();
+    runTileTests();
 
     return UNITY_END();
 }
