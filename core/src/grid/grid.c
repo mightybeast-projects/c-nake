@@ -14,7 +14,10 @@ static void freeTiles(Grid* const grid);
 
 Grid* allocateGrid(const unsigned cols, const unsigned rows)
 {
-    if ((int)cols * (int)rows < 2)
+    bool zeroSize = (int)cols == 0 || (int)rows == 0;
+    bool lessThanThreeRows = rows < 3;
+
+    if (zeroSize || lessThanThreeRows)
         return NULL;
 
     Grid* grid = safeMalloc(sizeof(struct Grid));

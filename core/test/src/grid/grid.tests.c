@@ -22,13 +22,25 @@ void Grid_Allocation_Should_Return_New_Grid(void)
     TEST_ASSERT_NOT_NULL(grid);
 }
 
-void Grid_With_Less_Than_Two_Tiles_Should_Not_Be_Allocated(void)
+void Grid_With_Either_Zero_Cols_Or_Rows_Should_Not_Be_Allocated(void)
 {
     Grid* grid;
 
     grid = allocateGrid(0, 0);
     grid = allocateGrid(0, 1);
     grid = allocateGrid(1, 0);
+
+    TEST_ASSERT_NULL(grid);
+
+    freeGrid(grid);
+}
+
+void Grid_With_Less_Than_Three_Rows_Should_Not_Be_Allocated(void)
+{
+    Grid* grid;
+
+    grid = allocateGrid(1, 1);
+    grid = allocateGrid(1, 2);
 
     TEST_ASSERT_NULL(grid);
 
@@ -73,7 +85,8 @@ void Grid_Should_Place_Food_On_Random_Tile()
 void runGridTests(void)
 {
     RUN_TEST(Grid_Allocation_Should_Return_New_Grid);
-    RUN_TEST(Grid_With_Less_Than_Two_Tiles_Should_Not_Be_Allocated);
+    RUN_TEST(Grid_With_Either_Zero_Cols_Or_Rows_Should_Not_Be_Allocated);
+    RUN_TEST(Grid_With_Less_Than_Three_Rows_Should_Not_Be_Allocated);
 
     RUN_TEST(Allocated_Grid_Should_Have_Passed_Width_And_Height);
     RUN_TEST(Allocated_Grid_Should_Have_Allocated_Tiles);
