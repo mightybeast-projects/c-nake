@@ -14,6 +14,9 @@ static void freeTiles(Grid* const grid);
 
 Grid* allocateGrid(const unsigned cols, const unsigned rows)
 {
+    if ((int)cols * (int)rows < 2)
+        return NULL;
+
     Grid* grid = safeMalloc(sizeof(struct Grid));
 
     grid->width = cols;
@@ -25,6 +28,9 @@ Grid* allocateGrid(const unsigned cols, const unsigned rows)
 
 void freeGrid(Grid* const grid)
 {
+    if (!grid)
+        return;
+
     freeTiles(grid);
     free(grid);
 }
