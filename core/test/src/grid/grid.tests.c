@@ -42,6 +42,21 @@ void Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height(void)
             TEST_ASSERT_NOT_NULL(tiles[i][j]);
 }
 
+void Grid_Should_Place_Food_On_Random_Tile()
+{
+    placeFood(grid, 1);
+
+    Tile*** tiles = gridTiles(grid);
+    int foodTilesCnt = 0;
+
+    for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
+            if (tileHasFood(tiles[i][j]))
+                foodTilesCnt++;
+
+    TEST_ASSERT_EQUAL_UINT(1, foodTilesCnt);
+}
+
 void runGridTests(void)
 {
     RUN_TEST(Grid_Allocation_Should_Return_New_Grid);
@@ -49,4 +64,6 @@ void runGridTests(void)
     RUN_TEST(Allocated_Grid_Should_Have_Passed_Width_And_Height);
     RUN_TEST(Allocated_Grid_Should_Have_Allocated_Tiles);
     RUN_TEST(Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height);
+
+    RUN_TEST(Grid_Should_Place_Food_On_Random_Tile);
 }

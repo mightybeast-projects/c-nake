@@ -1,4 +1,5 @@
 #include "grid.h"
+#include "mersenne-twister.h"
 #include "safe-memory.h"
 
 struct Grid
@@ -41,6 +42,22 @@ unsigned gridHeight(const Grid* const grid)
 Tile*** gridTiles(const Grid* const grid)
 {
     return grid->tiles;
+}
+
+void placeFood(const Grid* const grid, const unsigned seed)
+{
+    const unsigned width = gridWidth(grid);
+    const unsigned height = gridHeight(grid);
+
+    MTState state;
+
+    initializeMTRandom(&state, seed);
+    const int rIndex = nextMTRandom(&state) % (width * height);
+
+    for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
+            if (rIndex == height * i + j)
+                setTileFood(gridTiles(grid)[i][j], true);
 }
 
 static Tile*** allocateTiles(const unsigned cols, const unsigned rows)
