@@ -44,6 +44,11 @@ Tile* snakeHead(const Snake* const snake)
     return snake->body[0];
 }
 
+Tile* snakeTail(const Snake* const snake)
+{
+    return snake->body[snake->length - 1];
+}
+
 unsigned snakeLength(const Snake* const snake)
 {
     return snake->length;

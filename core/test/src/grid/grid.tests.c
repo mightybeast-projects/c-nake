@@ -68,7 +68,7 @@ void Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height(void)
             TEST_ASSERT_NOT_NULL(tiles[i][j]);
 }
 
-void Grid_Should_Place_Food_On_Random_Tile()
+void Grid_Should_Place_Food_On_Random_Tile(void)
 {
     Snake* snake = allocateSnake(grid);
 
@@ -85,7 +85,7 @@ void Grid_Should_Place_Food_On_Random_Tile()
     TEST_ASSERT_EQUAL_UINT(1, foodTilesCnt);
 }
 
-void Grid_Should_Not_Place_Food_On_Snake_Body()
+void Grid_Should_Not_Place_Food_On_Snake_Body(void)
 {
     const unsigned width = 1;
     const unsigned height = 3;

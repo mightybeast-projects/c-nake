@@ -18,17 +18,17 @@ void tearDownSnake(void)
     freeGrid(grid);
 }
 
-void Snake_Allocation_Should_Return_New_Snake()
+void Snake_Allocation_Should_Return_New_Snake(void)
 {
     TEST_ASSERT_NOT_NULL(snake);
 }
 
-void Allocated_Snake_Should_Know_About_Grid()
+void Allocated_Snake_Should_Know_About_Grid(void)
 {
     TEST_ASSERT_EQUAL(grid, snakeGrid(snake));
 }
 
-void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows()
+void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows(void)
 {
     Tile*** gTiles = gridTiles(grid);
     Tile** sTiles = snakeBody(snake);
@@ -37,17 +37,25 @@ void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows()
     TEST_ASSERT_EQUAL(gTiles[0][0], sTiles[1]);
 }
 
-void Allocated_Snake_Should_Have_Length_Of_Two()
+void Allocated_Snake_Should_Have_Length_Of_Two(void)
 {
     TEST_ASSERT_EQUAL_UINT(2, snakeLength(snake));
 }
 
-void Allocated_Snake_Should_Have_Head()
+void Allocated_Snake_Should_Have_Head(void)
 {
     Tile*** gTiles = gridTiles(grid);
     Tile* head = snakeHead(snake);
 
     TEST_ASSERT_EQUAL(gTiles[0][1], head);
+}
+
+void Allocated_Snake_Should_Have_Tail(void)
+{
+    Tile*** gTiles = gridTiles(grid);
+    Tile* tail = snakeTail(snake);
+
+    TEST_ASSERT_EQUAL(gTiles[0][0], tail);
 }
 
 void runSnakeTests(void)
@@ -57,4 +65,5 @@ void runSnakeTests(void)
     RUN_TEST(Allocated_Snake_Should_Know_About_Grid);
     RUN_TEST(Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows);
     RUN_TEST(Allocated_Snake_Should_Have_Head);
+    RUN_TEST(Allocated_Snake_Should_Have_Tail);
 }
