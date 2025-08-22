@@ -17,8 +17,8 @@ Snake* allocateSnake(Grid* const grid)
     snake->body = safeMalloc(sizeof(Tile*) * gridWidth(grid) * gridHeight(grid));
     snake->length = 2;
 
-    snake->body[0] = gridTiles(grid)[0][0];
-    snake->body[1] = gridTiles(grid)[0][1];
+    snake->body[0] = gridTiles(grid)[0][1];
+    snake->body[1] = gridTiles(grid)[0][0];
 
     return snake;
 }
@@ -37,6 +37,11 @@ Grid* snakeGrid(const Snake* const snake)
 Tile** snakeBody(const Snake* const snake)
 {
     return snake->body;
+}
+
+Tile* snakeHead(const Snake* const snake)
+{
+    return snake->body[0];
 }
 
 unsigned snakeLength(const Snake* const snake)

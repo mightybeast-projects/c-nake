@@ -33,13 +33,21 @@ void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows()
     Tile*** gTiles = gridTiles(grid);
     Tile** sTiles = snakeBody(snake);
 
-    TEST_ASSERT_EQUAL(gTiles[0][0], sTiles[0]);
-    TEST_ASSERT_EQUAL(gTiles[0][1], sTiles[1]);
+    TEST_ASSERT_EQUAL(gTiles[0][1], sTiles[0]);
+    TEST_ASSERT_EQUAL(gTiles[0][0], sTiles[1]);
 }
 
 void Allocated_Snake_Should_Have_Length_Of_Two()
 {
     TEST_ASSERT_EQUAL_UINT(2, snakeLength(snake));
+}
+
+void Allocated_Snake_Should_Have_Head()
+{
+    Tile*** gTiles = gridTiles(grid);
+    Tile* head = snakeHead(snake);
+
+    TEST_ASSERT_EQUAL(gTiles[0][1], head);
 }
 
 void runSnakeTests(void)
@@ -48,4 +56,5 @@ void runSnakeTests(void)
 
     RUN_TEST(Allocated_Snake_Should_Know_About_Grid);
     RUN_TEST(Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows);
+    RUN_TEST(Allocated_Snake_Should_Have_Head);
 }
