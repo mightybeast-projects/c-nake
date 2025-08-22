@@ -10,6 +10,8 @@ struct Snake
     Direction direction;
 };
 
+static bool directionsAreOpposite(Direction a, Direction b);
+
 Snake* allocateSnake(Grid* const grid)
 {
     Snake* snake = safeMalloc(sizeof(struct Snake));
@@ -63,5 +65,14 @@ Direction snakeDirection(const Snake* const snake)
 
 void changeDirection(Snake* const snake, const Direction direction)
 {
+    if (directionsAreOpposite(snake->direction, direction))
+        return;
+
     snake->direction = direction;
+}
+
+bool directionsAreOpposite(Direction a, Direction b)
+{
+    return (a == DOWN && b == UP) || (a == UP && b == DOWN)
+        || (a == RIGHT && b == LEFT) || (a == LEFT && b == RIGHT);
 }
