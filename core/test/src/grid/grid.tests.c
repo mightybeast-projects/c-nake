@@ -1,5 +1,6 @@
 #include "grid.h"
 #include "grid.tests.h"
+#include "snake.h"
 #include "stdio.h"
 #include "unity.h"
 
@@ -69,7 +70,9 @@ void Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height(void)
 
 void Grid_Should_Place_Food_On_Random_Tile()
 {
-    placeFood(grid, 1);
+    Snake* snake = allocateSnake(grid);
+
+    placeFood(grid, snake, 1);
 
     Tile*** tiles = gridTiles(grid);
     int foodTilesCnt = 0;
@@ -80,6 +83,27 @@ void Grid_Should_Place_Food_On_Random_Tile()
                 foodTilesCnt++;
 
     TEST_ASSERT_EQUAL_UINT(1, foodTilesCnt);
+}
+
+void Grid_Should_Not_Place_Food_On_Snake_Body()
+{
+    const unsigned width = 1;
+    const unsigned height = 3;
+
+    Grid* grid = allocateGrid(width, height);
+    Snake* snake = allocateSnake(grid);
+
+    placeFood(grid, snake, 1);
+
+    Tile*** tiles = gridTiles(grid);
+    Tile* foodTile = NULL;
+
+    for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
+            if (tileHasFood(tiles[i][j]))
+                foodTile = tiles[i][j];
+
+    TEST_ASSERT_EQUAL(tiles[0][2], foodTile);
 }
 
 void runGridTests(void)
@@ -93,4 +117,5 @@ void runGridTests(void)
     RUN_TEST(Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height);
 
     RUN_TEST(Grid_Should_Place_Food_On_Random_Tile);
+    RUN_TEST(Grid_Should_Not_Place_Food_On_Snake_Body);
 }

@@ -1,3 +1,4 @@
+#include "grid.h"
 #include "snake.h"
 #include "snake.tests.h"
 #include "unity.h"

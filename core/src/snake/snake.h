@@ -1,7 +1,8 @@
 #pragma once
 
-#include "grid.h"
+#include "tile.h"
 
+typedef struct Grid Grid;
 typedef struct Snake Snake;
 
 Snake* allocateSnake(Grid* const grid);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "snake.h"
 #include "tile.h"
 
 typedef struct Grid Grid;
@@ -12,4 +13,4 @@ unsigned gridHeight(const Grid* const grid);
 
 Tile*** gridTiles(const Grid* const grid);
 
-void placeFood(const Grid* const grid, const unsigned seed);
+void placeFood(const Grid* const grid, const Snake* const snake, const unsigned seed);

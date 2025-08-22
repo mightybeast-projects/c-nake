@@ -12,6 +12,16 @@ struct Grid
 static Tile*** allocateTiles(const unsigned cols, const unsigned rows);
 static void freeTiles(Grid* const grid);
 
+static unsigned getRandomFoodIndex(
+    const Grid* const grid,
+    const Snake* const snake,
+    const unsigned seed);
+
+static unsigned getNextRandomIndex(
+    const Grid* const grid,
+    const Snake* const snake,
+    MTState* const state);
+
 Grid* allocateGrid(const unsigned cols, const unsigned rows)
 {
     bool zeroSize = (int)cols == 0 || (int)rows == 0;
@@ -53,19 +63,15 @@ Tile*** gridTiles(const Grid* const grid)
     return grid->tiles;
 }
 
-void placeFood(const Grid* const grid, const unsigned seed)
+void placeFood(const Grid* const grid, const Snake* const snake, const unsigned seed)
 {
+    const unsigned index = getRandomFoodIndex(grid, snake, seed);
     const unsigned width = gridWidth(grid);
     const unsigned height = gridHeight(grid);
 
-    MTState state;
-
-    initializeMTRandom(&state, seed);
-    const int rIndex = nextMTRandom(&state) % (width * height);
-
     for (int i = 0; i < width; i++)
         for (int j = 0; j < height; j++)
-            if (rIndex == height * i + j)
+            if (index == height * i + j)
                 setTileFood(gridTiles(grid)[i][j], true);
 }
 
@@ -93,4 +99,39 @@ static void freeTiles(Grid* const grid)
     }
 
     free(grid->tiles);
+}
+
+static unsigned getRandomFoodIndex(
+    const Grid* const grid,
+    const Snake* const snake,
+    const unsigned seed)
+{
+    MTState* state = safeMalloc(sizeof(struct MTState));
+
+    initializeMTRandom(state, seed);
+
+    const unsigned index = getNextRandomIndex(grid, snake, state);
+
+    free(state);
+
+    return index;
+}
+
+static unsigned getNextRandomIndex(
+    const Grid* const grid,
+    const Snake* const snake,
+    MTState* const state)
+{
+    const unsigned width = gridWidth(grid);
+    const unsigned height = gridHeight(grid);
+    const unsigned index = nextMTRandom(state) % (width * height);
+
+    for (int i = 0; i < snakeLength(snake); i++) {
+        Tile* bodyTile = snakeBody(snake)[i];
+
+        if (height * tileI(bodyTile) + tileJ(bodyTile) == index)
+            return getNextRandomIndex(grid, snake, state);
+    }
+
+    return index;
 }
