@@ -3,6 +3,7 @@
 
 struct Snake
 {
+    unsigned length;
     Grid* grid;
     Tile** body;
 };
@@ -13,6 +14,7 @@ Snake* allocateSnake(Grid* const grid)
 
     snake->grid = grid;
     snake->body = safeMalloc(sizeof(Tile*) * gridWidth(grid) * gridHeight(grid));
+    snake->length = 2;
 
     snake->body[0] = gridTiles(grid)[0][0];
     snake->body[1] = gridTiles(grid)[0][1];
@@ -34,4 +36,9 @@ Grid* snakeGrid(const Snake* const snake)
 Tile** snakeBody(const Snake* const snake)
 {
     return snake->body;
+}
+
+unsigned snakeLength(const Snake* const snake)
+{
+    return snake->length;
 }
