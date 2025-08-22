@@ -63,6 +63,13 @@ void Allocated_Snake_Should_Have_Down_Direction(void)
     TEST_ASSERT_EQUAL(DOWN, snakeDirection(snake));
 }
 
+void Snake_Should_Be_Able_To_Change_Direction(void)
+{
+    changeDirection(snake, RIGHT);
+
+    TEST_ASSERT_EQUAL(RIGHT, snakeDirection(snake));
+}
+
 void runSnakeTests(void)
 {
     RUN_TEST(Snake_Allocation_Should_Return_New_Snake);
@@ -72,4 +79,6 @@ void runSnakeTests(void)
     RUN_TEST(Allocated_Snake_Should_Have_Head);
     RUN_TEST(Allocated_Snake_Should_Have_Tail);
     RUN_TEST(Allocated_Snake_Should_Have_Down_Direction);
+
+    RUN_TEST(Snake_Should_Be_Able_To_Change_Direction);
 }

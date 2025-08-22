@@ -60,3 +60,8 @@ Direction snakeDirection(const Snake* const snake)
 {
     return snake->direction;
 }
+
+void changeDirection(Snake* const snake, const Direction direction)
+{
+    snake->direction = direction;
+}
