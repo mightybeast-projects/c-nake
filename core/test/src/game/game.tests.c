@@ -64,7 +64,7 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
 
     Game* const game = allocateGame(cols, rows);
 
-    placeRandomFood(game, 1);
+    placeRandomFood(game, 2);
 
     Tile*** tiles = gridTiles(gameGrid(game));
     Tile* foodTile = NULL;
