@@ -91,6 +91,8 @@ void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Opposite_To_Curre
     changeDirection(snake, RIGHT);
 
     TEST_ASSERT_EQUAL(LEFT, snakeDirection(snake));
+
+    printGame(game);
 }
 
 void runSnakeTests(void)
