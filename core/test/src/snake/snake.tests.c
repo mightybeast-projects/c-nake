@@ -95,6 +95,15 @@ void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Opposite_To_Curre
     printGame(game);
 }
 
+void Snake_Should_Check_If_It_Contains_Tile(void)
+{
+    Tile*** const tiles = gridTiles(grid);
+
+    TEST_ASSERT_TRUE(snakeContainsTile(snake, tiles[0][0]));
+    TEST_ASSERT_TRUE(snakeContainsTile(snake, tiles[0][1]));
+    TEST_ASSERT_FALSE(snakeContainsTile(snake, tiles[0][2]));
+}
+
 void runSnakeTests(void)
 {
     RUN_TEST(Snake_Allocation_Should_Return_New_Snake);
@@ -107,4 +116,6 @@ void runSnakeTests(void)
 
     RUN_TEST(Snake_Should_Be_Able_To_Change_Direction);
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Opposite_To_Current);
+
+    RUN_TEST(Snake_Should_Check_If_It_Contains_Tile);
 }

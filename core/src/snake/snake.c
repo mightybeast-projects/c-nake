@@ -1,6 +1,6 @@
+#include "snake.h"
 #include "grid.h"
 #include "safe-memory.h"
-#include "snake.h"
 
 struct Snake
 {
@@ -71,7 +71,16 @@ void changeDirection(Snake* const snake, const Direction direction)
     snake->direction = direction;
 }
 
-bool directionsAreOpposite(Direction a, Direction b)
+bool snakeContainsTile(const Snake* const snake, const Tile* const tile)
+{
+    for (int i = 0; i < snake->length; i++)
+        if (snake->body[i] == tile)
+            return true;
+
+    return false;
+}
+
+static bool directionsAreOpposite(Direction a, Direction b)
 {
     return (a == DOWN && b == UP) || (a == UP && b == DOWN)
         || (a == RIGHT && b == LEFT) || (a == LEFT && b == RIGHT);

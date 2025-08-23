@@ -24,3 +24,5 @@ unsigned snakeLength(const Snake* const snake);
 Direction snakeDirection(const Snake* const snake);
 
 void changeDirection(Snake* const snake, const Direction direction);
+
+bool snakeContainsTile(const Snake* const snake, const Tile* const tile);
