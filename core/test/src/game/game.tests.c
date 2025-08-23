@@ -2,8 +2,8 @@
 #include "game.h"
 #include "unity.h"
 
-static unsigned cols = 15;
-static unsigned rows = 10;
+static unsigned cols = 5;
+static unsigned rows = 5;
 static Game* game;
 
 void setUpGame(void)
@@ -42,7 +42,7 @@ void Allocated_Game_Should_Have_Snake(void)
 
 void Game_Should_Place_Food_On_Random_Tile(void)
 {
-    placeRandomFood(game, 1);
+    placeRandomFood(game, 6);
 
     Tile*** tiles = gridTiles(gameGrid(game));
     int foodTilesCnt = 0;

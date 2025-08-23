@@ -10,6 +10,7 @@ struct Game
 };
 
 static Tile* chooseRandomTile(const Game* game, MTState* const state);
+static void printTile(const Tile* const tile, const Snake* const snake);
 
 Game* allocateGame(const unsigned cols, const unsigned rows)
 {
@@ -63,26 +64,28 @@ void printGame(const Game* const game)
     Tile** const body = snakeBody(snake);
     const unsigned length = snakeLength(snake);
 
-    const char* directionChars[4] = { "↑", "↓", "←", "→" };
-
     for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            Tile* const tile = tiles[j][i];
-
-            if (tileHasFood(tile))
-                printf("x ");
-            else if (tile == snakeHead(snake))
-                printf("%s ", directionChars[snakeDirection(snake)]);
-            else if (tile == snakeTail(snake))
-                printf("* ");
-            else if (snakeContainsTile(snake, tile))
-                printf("# ");
-            else
-                printf(". ");
-        }
+        for (int j = 0; j < width; j++)
+            printTile(tiles[j][i], snake);
 
         printf("\n");
     }
+}
+
+static void printTile(const Tile* const tile, const Snake* const snake)
+{
+    const char* directionChars[4] = { "↑", "↓", "←", "→" };
+
+    if (tileHasFood(tile))
+        printf("x ");
+    else if (tile == snakeHead(snake))
+        printf("%s ", directionChars[snakeDirection(snake)]);
+    else if (tile == snakeTail(snake))
+        printf("* ");
+    else if (snakeContainsTile(snake, tile))
+        printf("# ");
+    else
+        printf(". ");
 }
 
 static Tile* chooseRandomTile(const Game* game, MTState* const state)
