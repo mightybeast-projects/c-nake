@@ -65,12 +65,23 @@ void printGame(const Game* const game)
     Tile** const body = snakeBody(snake);
     const unsigned length = snakeLength(snake);
 
+    const char* directionChars[4] = { "↑", "↓", "←", "→" };
+
     for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++)
-            if (snakeContainsTile(snake, tiles[j][i]))
+        for (int j = 0; j < width; j++) {
+            Tile* const tile = tiles[j][i];
+
+            if (tileHasFood(tile))
+                printf("x ");
+            else if (tile == snakeHead(snake))
+                printf("%s ", directionChars[snakeDirection(snake)]);
+            else if (tile == snakeTail(snake))
+                printf("* ");
+            else if (snakeContainsTile(snake, tile))
                 printf("# ");
             else
                 printf(". ");
+        }
 
         printf("\n");
     }
