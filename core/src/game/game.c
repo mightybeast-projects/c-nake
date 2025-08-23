@@ -48,23 +48,11 @@ void printGame(const Game* const game)
     const unsigned length = snakeLength(snake);
 
     for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            const Tile* const tile = tiles[j][i];
-            bool isSnakeTile = false;
-
-            for (int k = 0; k < length; k++) {
-                Tile* bTile = body[k];
-
-                if (bTile == tile) {
-                    printf("# ");
-                    isSnakeTile = true;
-                    break;
-                }
-            }
-
-            if (!isSnakeTile)
+        for (int j = 0; j < width; j++)
+            if (snakeContainsTile(snake, tiles[j][i]))
+                printf("# ");
+            else
                 printf(". ");
-        }
 
         printf("\n");
     }
