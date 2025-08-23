@@ -4,13 +4,13 @@
 #include "stdio.h"
 #include "unity.h"
 
-static unsigned width = 10;
-static unsigned height = 15;
+static unsigned cols = 10;
+static unsigned rows = 10;
 static Grid* grid;
 
 void setUpGrid(void)
 {
-    grid = allocateGrid(width, height);
+    grid = allocateGrid(cols, rows);
 }
 
 void tearDownGrid(void)
@@ -50,8 +50,8 @@ void Grid_With_Less_Than_Three_Rows_Should_Not_Be_Allocated(void)
 
 void Allocated_Grid_Should_Have_Passed_Width_And_Height(void)
 {
-    TEST_ASSERT_EQUAL_UINT(width, gridWidth(grid));
-    TEST_ASSERT_EQUAL_UINT(height, gridHeight(grid));
+    TEST_ASSERT_EQUAL_UINT(cols, gridWidth(grid));
+    TEST_ASSERT_EQUAL_UINT(rows, gridHeight(grid));
 }
 
 void Allocated_Grid_Should_Have_Allocated_Tiles(void)
@@ -63,47 +63,9 @@ void Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height(void)
 {
     Tile*** tiles = gridTiles(grid);
 
-    for (int i = 0; i < width; i++)
-        for (int j = 0; j < height; j++)
+    for (int i = 0; i < cols; i++)
+        for (int j = 0; j < rows; j++)
             TEST_ASSERT_NOT_NULL(tiles[i][j]);
-}
-
-void Grid_Should_Place_Food_On_Random_Tile(void)
-{
-    Snake* snake = allocateSnake(grid);
-
-    placeFood(grid, snake, 1);
-
-    Tile*** tiles = gridTiles(grid);
-    int foodTilesCnt = 0;
-
-    for (int i = 0; i < width; i++)
-        for (int j = 0; j < height; j++)
-            if (tileHasFood(tiles[i][j]))
-                foodTilesCnt++;
-
-    TEST_ASSERT_EQUAL_UINT(1, foodTilesCnt);
-}
-
-void Grid_Should_Not_Place_Food_On_Snake_Body(void)
-{
-    const unsigned width = 1;
-    const unsigned height = 3;
-
-    Grid* grid = allocateGrid(width, height);
-    Snake* snake = allocateSnake(grid);
-
-    placeFood(grid, snake, 1);
-
-    Tile*** tiles = gridTiles(grid);
-    Tile* foodTile = NULL;
-
-    for (int i = 0; i < width; i++)
-        for (int j = 0; j < height; j++)
-            if (tileHasFood(tiles[i][j]))
-                foodTile = tiles[i][j];
-
-    TEST_ASSERT_EQUAL(tiles[0][2], foodTile);
 }
 
 void runGridTests(void)
@@ -115,7 +77,4 @@ void runGridTests(void)
     RUN_TEST(Allocated_Grid_Should_Have_Passed_Width_And_Height);
     RUN_TEST(Allocated_Grid_Should_Have_Allocated_Tiles);
     RUN_TEST(Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height);
-
-    RUN_TEST(Grid_Should_Place_Food_On_Random_Tile);
-    RUN_TEST(Grid_Should_Not_Place_Food_On_Snake_Body);
 }

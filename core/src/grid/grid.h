@@ -12,5 +12,3 @@ unsigned gridWidth(const Grid* const grid);
 unsigned gridHeight(const Grid* const grid);
 
 Tile*** gridTiles(const Grid* const grid);
-
-void placeFood(const Grid* const grid, const Snake* const snake, const unsigned seed);
