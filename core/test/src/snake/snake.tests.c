@@ -1,21 +1,22 @@
-#include "snake.h"
-#include "grid.h"
 #include "snake.tests.h"
+#include "game.h"
 #include "unity.h"
 
+static Game* game;
 static Grid* grid;
 static Snake* snake;
 
 void setUpSnake(void)
 {
-    grid = allocateGrid(10, 10);
-    snake = allocateSnake(grid);
+    game = allocateGame();
+
+    grid = gameGrid(game);
+    snake = gameSnake(game);
 }
 
 void tearDownSnake(void)
 {
-    freeSnake(snake);
-    freeGrid(grid);
+    freeGame(game);
 }
 
 void Snake_Allocation_Should_Return_New_Snake(void)
