@@ -39,7 +39,7 @@ Snake* gameSnake(const Game* const game)
     return game->snake;
 }
 
-void placeFood(const Game* const game, const unsigned seed)
+void placeRandomFood(const Game* const game, const unsigned seed)
 {
     Grid* const grid = game->grid;
 

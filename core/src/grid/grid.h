@@ -1,6 +1,5 @@
 #pragma once
 
-#include "snake.h"
 #include "tile.h"
 
 typedef struct Grid Grid;

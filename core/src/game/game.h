@@ -1,6 +1,7 @@
 #pragma once
 
 #include "grid.h"
+#include "snake.h"
 
 typedef struct Game Game;
 
@@ -10,6 +11,6 @@ void freeGame(Game* const game);
 Grid* gameGrid(const Game* const game);
 Snake* gameSnake(const Game* const game);
 
-void placeFood(const Game* const game, const unsigned seed);
+void placeRandomFood(const Game* const game, const unsigned seed);
 
 void printGame(const Game* const game);

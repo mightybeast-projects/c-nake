@@ -2,8 +2,8 @@
 #include "game.h"
 #include "unity.h"
 
-static unsigned cols = 10;
-static unsigned rows = 15;
+static unsigned cols = 15;
+static unsigned rows = 10;
 static Game* game;
 
 void setUpGame(void)
@@ -42,7 +42,7 @@ void Allocated_Game_Should_Have_Snake(void)
 
 void Game_Should_Place_Food_On_Random_Tile(void)
 {
-    placeFood(game, 1);
+    placeRandomFood(game, 1);
 
     Tile*** tiles = gridTiles(gameGrid(game));
     int foodTilesCnt = 0;
@@ -53,19 +53,20 @@ void Game_Should_Place_Food_On_Random_Tile(void)
                 foodTilesCnt++;
 
     TEST_ASSERT_EQUAL_UINT(1, foodTilesCnt);
+
+    printGame(game);
 }
 
 void Game_Should_Not_Place_Food_On_Snake_Body(void)
 {
-    const unsigned width = 1;
-    const unsigned height = 3;
+    const unsigned cols = 1;
+    const unsigned rows = 3;
 
-    Grid* grid = allocateGrid(width, height);
-    Snake* snake = allocateSnake(grid);
+    Game* const game = allocateGame(cols, rows);
 
-    placeFood(game, 1);
+    placeRandomFood(game, 1);
 
-    Tile*** tiles = gridTiles(grid);
+    Tile*** tiles = gridTiles(gameGrid(game));
     Tile* foodTile = NULL;
 
     for (int i = 0; i < cols; i++)
@@ -74,6 +75,8 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
                 foodTile = tiles[i][j];
 
     TEST_ASSERT_EQUAL(tiles[0][2], foodTile);
+
+    printGame(game);
 }
 
 void runGameTests(void)
@@ -85,5 +88,5 @@ void runGameTests(void)
     RUN_TEST(Allocated_Game_Should_Have_Snake);
 
     RUN_TEST(Game_Should_Place_Food_On_Random_Tile);
-    // RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
+    RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
 }
