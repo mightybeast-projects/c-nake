@@ -4,7 +4,7 @@
 
 typedef struct Game Game;
 
-Game* allocateGame();
+Game* allocateGame(const unsigned cols, const unsigned rows);
 void freeGame(Game* const game);
 
 Grid* gameGrid(const Game* const game);

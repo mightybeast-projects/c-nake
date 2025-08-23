@@ -8,7 +8,7 @@ static Snake* snake;
 
 void setUpSnake(void)
 {
-    game = allocateGame();
+    game = allocateGame(10, 12);
 
     grid = gameGrid(game);
     snake = gameSnake(game);

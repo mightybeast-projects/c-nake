@@ -12,11 +12,11 @@ struct Game
 static unsigned getRandomFoodIndex(const Game* game, const unsigned seed);
 static unsigned getNextRandomIndex(const Game* game, MTState* const state);
 
-Game* allocateGame()
+Game* allocateGame(const unsigned cols, const unsigned rows)
 {
     Game* game = safeMalloc(sizeof(struct Game));
 
-    game->grid = allocateGrid(10, 10);
+    game->grid = allocateGrid(cols, rows);
     game->snake = allocateSnake(game->grid);
 
     return game;

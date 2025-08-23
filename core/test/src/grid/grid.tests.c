@@ -5,7 +5,7 @@
 #include "unity.h"
 
 static unsigned cols = 10;
-static unsigned rows = 10;
+static unsigned rows = 20;
 static Grid* grid;
 
 void setUpGrid(void)
