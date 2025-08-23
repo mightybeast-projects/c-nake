@@ -1,9 +1,10 @@
 #pragma once
 
-typedef struct Game
-{
+#include "grid.h"
 
-} Game;
+typedef struct Game Game;
 
 Game* allocateGame();
 void freeGame(Game* const game);
+
+Grid* gameGrid(const Game* const game);
