@@ -1,10 +1,10 @@
-#include "grid.h"
 #include "snake.h"
+#include "grid.h"
 #include "snake.tests.h"
 #include "unity.h"
 
-Grid* grid;
-Snake* snake;
+static Grid* grid;
+static Snake* snake;
 
 void setUpSnake(void)
 {

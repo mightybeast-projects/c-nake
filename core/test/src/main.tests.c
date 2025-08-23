@@ -1,3 +1,4 @@
+#include "game.tests.h"
 #include "grid.tests.h"
 #include "snake.tests.h"
 #include "stdbool.h"
@@ -9,6 +10,7 @@ void setUp(void)
     setUpTile();
     setUpGrid();
     setUpSnake();
+    setUpGame();
 }
 
 void tearDown(void)
@@ -16,6 +18,7 @@ void tearDown(void)
     tearDownTile();
     tearDownGrid();
     tearDownSnake();
+    tearDownGame();
 }
 
 int main(void)
@@ -25,6 +28,7 @@ int main(void)
     runTileTests();
     runGridTests();
     runSnakeTests();
+    runGameTests();
 
     return UNITY_END();
 }
