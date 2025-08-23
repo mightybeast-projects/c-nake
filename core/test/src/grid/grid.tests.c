@@ -48,7 +48,7 @@ void Grid_With_Less_Than_Three_Rows_Should_Not_Be_Allocated(void)
     freeGrid(grid);
 }
 
-void Allocated_Grid_Should_Have_Passed_Width_And_Height(void)
+void Allocated_Grid_Should_Have_Passed_Size(void)
 {
     TEST_ASSERT_EQUAL_UINT(cols, gridWidth(grid));
     TEST_ASSERT_EQUAL_UINT(rows, gridHeight(grid));
@@ -74,7 +74,7 @@ void runGridTests(void)
     RUN_TEST(Grid_With_Either_Zero_Cols_Or_Rows_Should_Not_Be_Allocated);
     RUN_TEST(Grid_With_Less_Than_Three_Rows_Should_Not_Be_Allocated);
 
-    RUN_TEST(Allocated_Grid_Should_Have_Passed_Width_And_Height);
+    RUN_TEST(Allocated_Grid_Should_Have_Passed_Size);
     RUN_TEST(Allocated_Grid_Should_Have_Allocated_Tiles);
     RUN_TEST(Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height);
 }

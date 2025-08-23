@@ -39,6 +39,20 @@ Snake* gameSnake(const Game* const game)
     return game->snake;
 }
 
+Tile* foodTile(const Game* const game)
+{
+    Tile*** const tiles = gridTiles(game->grid);
+    const unsigned width = gridWidth(game->grid);
+    const unsigned height = gridHeight(game->grid);
+
+    for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
+            if (tileHasFood(tiles[i][j]))
+                return tiles[i][j];
+
+    return NULL;
+}
+
 void placeRandomFood(const Game* const game, const unsigned seed)
 {
     MTState* state = safeMalloc(sizeof(struct MTState));

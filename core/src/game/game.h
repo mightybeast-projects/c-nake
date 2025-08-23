@@ -11,6 +11,7 @@ void freeGame(Game* const game);
 Grid* gameGrid(const Game* const game);
 Snake* gameSnake(const Game* const game);
 
+Tile* foodTile(const Game* const game);
 void placeRandomFood(const Game* const game, const unsigned seed);
 
 void printGame(const Game* const game);
