@@ -127,7 +127,6 @@ void Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)
     moveSnake(game);
 
     TEST_ASSERT_FALSE(tileHasFood(tiles[0][2]));
-    TEST_ASSERT_NULL(foodTile(game));
 
     printGame(game);
 }
@@ -142,6 +141,20 @@ void Game_Snake_Should_Grow_After_Eating_Food(void)
     TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
     TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
     TEST_ASSERT_EQUAL(tiles[0][0], body[2]);
+
+    printGame(game);
+}
+
+void Game_Should_Randomly_Place_Next_Food_Tile_If_Snake_Ate_After_Moving(void)
+{
+    Tile* tile = foodTile(game);
+
+    setTileFood(tiles[0][2], true);
+
+    moveSnake(game);
+
+    TEST_ASSERT_NOT_NULL(foodTile(game));
+    TEST_ASSERT_NOT_EQUAL(foodTile(game), tile);
 
     printGame(game);
 }
@@ -162,4 +175,5 @@ void runGameTests(void)
     RUN_TEST(Game_Snake_Should_Move_In_Chosen_Direction);
     RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
     RUN_TEST(Game_Snake_Should_Grow_After_Eating_Food);
+    RUN_TEST(Game_Should_Randomly_Place_Next_Food_Tile_If_Snake_Ate_After_Moving);
 }

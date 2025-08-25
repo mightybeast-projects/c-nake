@@ -2,6 +2,7 @@
 #include "mersenne-twister.h"
 #include "safe-memory.h"
 #include "stdio.h"
+#include "time.h"
 
 struct Game
 {
@@ -82,6 +83,7 @@ void moveSnake(const Game* const game)
     if (tileHasFood(newHeadTile)) {
         setTileFood(newHeadTile, false);
         growSnake(snake);
+        placeRandomFood(game, time(NULL));
     }
 
     Tile** const sbody = snakeBody(snake);

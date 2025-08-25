@@ -43,16 +43,12 @@ void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows(void)
 
 void Allocated_Snake_Should_Have_Head(void)
 {
-    Tile* const head = snakeHead(snake);
-
-    TEST_ASSERT_EQUAL(tiles[0][1], head);
+    TEST_ASSERT_EQUAL(tiles[0][1], snakeHead(snake));
 }
 
 void Allocated_Snake_Should_Have_Tail(void)
 {
-    Tile* const tail = snakeTail(snake);
-
-    TEST_ASSERT_EQUAL(tiles[0][0], tail);
+    TEST_ASSERT_EQUAL(tiles[0][0], snakeTail(snake));
 }
 
 void Allocated_Snake_Should_Have_Down_Direction(void)

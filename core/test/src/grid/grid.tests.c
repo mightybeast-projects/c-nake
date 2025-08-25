@@ -23,7 +23,7 @@ void Grid_Allocation_Should_Return_New_Grid(void)
     TEST_ASSERT_NOT_NULL(grid);
 }
 
-void Grid_With_Either_Zero_Cols_Or_Rows_Should_Not_Be_Allocated(void)
+void Grid_With_Either_Zero_Columns_Or_Rows_Should_Not_Be_Allocated(void)
 {
     Grid* grid;
 
@@ -69,7 +69,7 @@ void Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height(void)
 void runGridTests(void)
 {
     RUN_TEST(Grid_Allocation_Should_Return_New_Grid);
-    RUN_TEST(Grid_With_Either_Zero_Cols_Or_Rows_Should_Not_Be_Allocated);
+    RUN_TEST(Grid_With_Either_Zero_Columns_Or_Rows_Should_Not_Be_Allocated);
     RUN_TEST(Grid_With_Less_Than_Three_Rows_Should_Not_Be_Allocated);
 
     RUN_TEST(Allocated_Grid_Should_Have_Passed_Size);
