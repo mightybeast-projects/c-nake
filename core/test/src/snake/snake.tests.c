@@ -6,12 +6,16 @@ static Game* game;
 static Grid* grid;
 static Snake* snake;
 
+static Tile*** tiles;
+
 void setUpSnake(void)
 {
     game = allocateGame(5, 5);
 
     grid = gameGrid(game);
     snake = gameSnake(game);
+
+    tiles = gridTiles(grid);
 }
 
 void tearDownSnake(void)
@@ -24,34 +28,31 @@ void Snake_Allocation_Should_Return_New_Snake(void)
     TEST_ASSERT_NOT_NULL(snake);
 }
 
-void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows(void)
-{
-    Tile*** gTiles = gridTiles(grid);
-    Tile** sTiles = snakeBody(snake);
-
-    TEST_ASSERT_EQUAL(gTiles[0][1], sTiles[0]);
-    TEST_ASSERT_EQUAL(gTiles[0][0], sTiles[1]);
-}
-
 void Allocated_Snake_Should_Have_Length_Of_Two(void)
 {
     TEST_ASSERT_EQUAL_UINT(2, snakeLength(snake));
 }
 
+void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows(void)
+{
+    Tile** const body = snakeBody(snake);
+
+    TEST_ASSERT_EQUAL(tiles[0][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][0], body[1]);
+}
+
 void Allocated_Snake_Should_Have_Head(void)
 {
-    Tile*** gTiles = gridTiles(grid);
-    Tile* head = snakeHead(snake);
+    Tile* const head = snakeHead(snake);
 
-    TEST_ASSERT_EQUAL(gTiles[0][1], head);
+    TEST_ASSERT_EQUAL(tiles[0][1], head);
 }
 
 void Allocated_Snake_Should_Have_Tail(void)
 {
-    Tile*** gTiles = gridTiles(grid);
-    Tile* tail = snakeTail(snake);
+    Tile* const tail = snakeTail(snake);
 
-    TEST_ASSERT_EQUAL(gTiles[0][0], tail);
+    TEST_ASSERT_EQUAL(tiles[0][0], tail);
 }
 
 void Allocated_Snake_Should_Have_Down_Direction(void)
@@ -90,8 +91,6 @@ void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Opposite_To_Curre
 
 void Snake_Should_Check_If_It_Contains_Tile(void)
 {
-    Tile*** const tiles = gridTiles(grid);
-
     TEST_ASSERT_TRUE(snakeContainsTile(snake, tiles[0][0]));
     TEST_ASSERT_TRUE(snakeContainsTile(snake, tiles[0][1]));
     TEST_ASSERT_FALSE(snakeContainsTile(snake, tiles[0][2]));

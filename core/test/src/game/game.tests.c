@@ -6,9 +6,17 @@ static unsigned cols = 5;
 static unsigned rows = 5;
 static Game* game;
 
+static Snake* snake;
+static Tile** body;
+static Tile*** tiles;
+
 void setUpGame(void)
 {
     game = allocateGame(cols, rows);
+
+    snake = gameSnake(game);
+    body = snakeBody(snake);
+    tiles = gridTiles(gameGrid(game));
 }
 
 void tearDownGame(void)
@@ -28,8 +36,6 @@ void Allocated_Game_Should_Have_Grid(void)
 
 void Allocated_Game_Should_Have_Grid_With_Passed_Size(void)
 {
-    Tile*** tiles = gridTiles(gameGrid(game));
-
     for (int i = 0; i < cols; i++)
         for (int j = 0; j < rows; j++)
             TEST_ASSERT_NOT_NULL(tiles[i][j]);
@@ -51,7 +57,6 @@ void Game_Should_Place_Food_On_Random_Tile(void)
 {
     placeRandomFood(game, 6);
 
-    Tile*** tiles = gridTiles(gameGrid(game));
     int foodTilesCnt = 0;
 
     for (int i = 0; i < cols; i++)
@@ -67,7 +72,7 @@ void Game_Should_Place_Food_On_Random_Tile(void)
 void Game_Should_Not_Place_Food_On_Snake_Body(void)
 {
     Game* const game = allocateGame(1, 3);
-    Tile*** tiles = gridTiles(gameGrid(game));
+    Tile*** const tiles = gridTiles(gameGrid(game));
 
     placeRandomFood(game, 2);
 
@@ -80,12 +85,7 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
 
 void Game_Snake_Should_Move_In_Chosen_Direction(void)
 {
-    Snake* const snake = gameSnake(game);
-
     moveSnake(game);
-
-    Tile** const body = snakeBody(snake);
-    Tile*** const tiles = gridTiles(gameGrid(game));
 
     TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
     TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
@@ -122,14 +122,9 @@ void Game_Snake_Should_Move_In_Chosen_Direction(void)
 
 void Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)
 {
-    Snake* const snake = gameSnake(game);
-    Tile*** const tiles = gridTiles(gameGrid(game));
-
     setTileFood(tiles[0][2], true);
 
     moveSnake(game);
-
-    Tile** const body = snakeBody(snake);
 
     TEST_ASSERT_FALSE(tileHasFood(tiles[0][2]));
     TEST_ASSERT_NULL(foodTile(game));
@@ -137,16 +132,11 @@ void Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)
     printGame(game);
 }
 
-void Snake_Snake_Should_Grow_After_Eating_Food(void)
+void Game_Snake_Should_Grow_After_Eating_Food(void)
 {
-    Snake* const snake = gameSnake(game);
-    Tile*** const tiles = gridTiles(gameGrid(game));
-
     setTileFood(tiles[0][2], true);
 
     moveSnake(game);
-
-    Tile** const body = snakeBody(snake);
 
     TEST_ASSERT_EQUAL_UINT(3, snakeLength(snake));
     TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
@@ -171,5 +161,5 @@ void runGameTests(void)
 
     RUN_TEST(Game_Snake_Should_Move_In_Chosen_Direction);
     RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
-    RUN_TEST(Snake_Snake_Should_Grow_After_Eating_Food);
+    RUN_TEST(Game_Snake_Should_Grow_After_Eating_Food);
 }

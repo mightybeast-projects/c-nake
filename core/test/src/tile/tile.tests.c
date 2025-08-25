@@ -21,11 +21,9 @@ void Tile_Allocation_Should_Return_New_Tile(void)
 
 void Tile_Allocation_Should_Not_Return_New_Tile_If_Indexes_Are_Negative(void)
 {
-    Tile* tile = allocateTile(-1, -1);
+    Tile* const tile = allocateTile(-1, -1);
 
     TEST_ASSERT_NULL(tile);
-
-    freeTile(tile);
 }
 
 void Allocated_Tile_Should_Have_Passed_Indexes(void)

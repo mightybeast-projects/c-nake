@@ -44,8 +44,6 @@ void Grid_With_Less_Than_Three_Rows_Should_Not_Be_Allocated(void)
     grid = allocateGrid(1, 2);
 
     TEST_ASSERT_NULL(grid);
-
-    freeGrid(grid);
 }
 
 void Allocated_Grid_Should_Have_Passed_Size(void)
@@ -61,7 +59,7 @@ void Allocated_Grid_Should_Have_Allocated_Tiles(void)
 
 void Allocated_Grid_Should_Have_Tiles_With_Passed_Width_And_Height(void)
 {
-    Tile*** tiles = gridTiles(grid);
+    Tile*** const tiles = gridTiles(grid);
 
     for (int i = 0; i < cols; i++)
         for (int j = 0; j < rows; j++)
