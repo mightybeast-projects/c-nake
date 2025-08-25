@@ -71,6 +71,31 @@ void changeDirection(Snake* const snake, const Direction direction)
     snake->direction = direction;
 }
 
+void move(Snake* const snake)
+{
+    Tile*** const tiles = gridTiles(snake->grid);
+
+    for (int i = snake->length - 1; i > 0; i--)
+        snake->body[i] = snake->body[i - 1];
+
+    Tile* const head = snakeHead(snake);
+    const unsigned headI = tileI(head);
+    const unsigned headJ = tileJ(head);
+
+    Tile* nextHeadTile;
+
+    if (snake->direction == DOWN)
+        nextHeadTile = tiles[headI][headJ + 1];
+    if (snake->direction == RIGHT)
+        nextHeadTile = tiles[headI + 1][headJ];
+    if (snake->direction == UP)
+        nextHeadTile = tiles[headI][headJ - 1];
+    if (snake->direction == LEFT)
+        nextHeadTile = tiles[headI - 1][headJ];
+
+    snake->body[0] = nextHeadTile;
+}
+
 bool snakeContainsTile(const Snake* const snake, const Tile* const tile)
 {
     for (int i = 0; i < snake->length; i++)

@@ -93,6 +93,44 @@ void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Opposite_To_Curre
     TEST_ASSERT_EQUAL(LEFT, snakeDirection(snake));
 }
 
+void Snake_Should_Move_In_Chosen_Direction(void)
+{
+    move(snake);
+
+    Tile** body = snakeBody(snake);
+    Tile*** tiles = gridTiles(gameGrid(game));
+
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, RIGHT);
+
+    move(snake);
+
+    TEST_ASSERT_EQUAL(tiles[1][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][2], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, UP);
+
+    move(snake);
+
+    TEST_ASSERT_EQUAL(tiles[1][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][2], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, LEFT);
+
+    move(snake);
+
+    TEST_ASSERT_EQUAL(tiles[0][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][1], body[1]);
+}
+
 void Snake_Should_Check_If_It_Contains_Tile(void)
 {
     Tile*** const tiles = gridTiles(grid);
@@ -114,6 +152,8 @@ void runSnakeTests(void)
 
     RUN_TEST(Snake_Should_Be_Able_To_Change_Direction);
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Opposite_To_Current);
+
+    RUN_TEST(Snake_Should_Move_In_Chosen_Direction);
 
     RUN_TEST(Snake_Should_Check_If_It_Contains_Tile);
 }

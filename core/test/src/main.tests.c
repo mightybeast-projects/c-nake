@@ -9,16 +9,16 @@ void setUp(void)
 {
     setUpTile();
     setUpGrid();
-    setUpSnake();
     setUpGame();
+    setUpSnake();
 }
 
 void tearDown(void)
 {
     tearDownTile();
     tearDownGrid();
-    tearDownSnake();
     tearDownGame();
+    tearDownSnake();
 }
 
 int main(void)
@@ -27,8 +27,8 @@ int main(void)
 
     runTileTests();
     runGridTests();
-    runSnakeTests();
     runGameTests();
+    runSnakeTests();
 
     return UNITY_END();
 }

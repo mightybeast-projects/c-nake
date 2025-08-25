@@ -1,5 +1,6 @@
 #pragma once
 
+#include "grid.h"
 #include "tile.h"
 
 typedef enum
@@ -10,7 +11,6 @@ typedef enum
     RIGHT
 } Direction;
 
-typedef struct Grid Grid;
 typedef struct Snake Snake;
 
 Snake* allocateSnake(Grid* const grid);
@@ -24,5 +24,7 @@ unsigned snakeLength(const Snake* const snake);
 Direction snakeDirection(const Snake* const snake);
 
 void changeDirection(Snake* const snake, const Direction direction);
+
+void move(Snake* const snake);
 
 bool snakeContainsTile(const Snake* const snake, const Tile* const tile);
