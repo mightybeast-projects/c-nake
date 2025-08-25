@@ -129,6 +129,8 @@ void Snake_Should_Move_In_Chosen_Direction(void)
 
     TEST_ASSERT_EQUAL(tiles[0][1], body[0]);
     TEST_ASSERT_EQUAL(tiles[1][1], body[1]);
+
+    printGame(game);
 }
 
 void Snake_Should_Check_If_It_Contains_Tile(void)

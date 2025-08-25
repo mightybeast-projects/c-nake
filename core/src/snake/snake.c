@@ -82,18 +82,10 @@ void move(Snake* const snake)
     const unsigned headI = tileI(head);
     const unsigned headJ = tileJ(head);
 
-    Tile* nextHeadTile;
+    const int vectors[4][2] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
+    const int* vector = vectors[snake->direction];
 
-    if (snake->direction == DOWN)
-        nextHeadTile = tiles[headI][headJ + 1];
-    if (snake->direction == RIGHT)
-        nextHeadTile = tiles[headI + 1][headJ];
-    if (snake->direction == UP)
-        nextHeadTile = tiles[headI][headJ - 1];
-    if (snake->direction == LEFT)
-        nextHeadTile = tiles[headI - 1][headJ];
-
-    snake->body[0] = nextHeadTile;
+    snake->body[0] = tiles[headI + vector[0]][headJ + vector[1]];
 }
 
 bool snakeContainsTile(const Snake* const snake, const Tile* const tile)
