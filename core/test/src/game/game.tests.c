@@ -78,6 +78,84 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
     freeGame(game);
 }
 
+void Game_Snake_Should_Move_In_Chosen_Direction(void)
+{
+    Snake* const snake = gameSnake(game);
+
+    moveSnake(game);
+
+    Tile** const body = snakeBody(snake);
+    Tile*** const tiles = gridTiles(gameGrid(game));
+
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, RIGHT);
+
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[1][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][2], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, UP);
+
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[1][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][2], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, LEFT);
+
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[0][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][1], body[1]);
+
+    printGame(game);
+}
+
+void Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)
+{
+    Snake* const snake = gameSnake(game);
+    Tile*** const tiles = gridTiles(gameGrid(game));
+
+    setTileFood(tiles[0][2], true);
+
+    moveSnake(game);
+
+    Tile** const body = snakeBody(snake);
+
+    TEST_ASSERT_FALSE(tileHasFood(tiles[0][2]));
+    TEST_ASSERT_NULL(foodTile(game));
+
+    printGame(game);
+}
+
+void Snake_Snake_Should_Grow_After_Eating_Food(void)
+{
+    Snake* const snake = gameSnake(game);
+    Tile*** const tiles = gridTiles(gameGrid(game));
+
+    setTileFood(tiles[0][2], true);
+
+    moveSnake(game);
+
+    Tile** const body = snakeBody(snake);
+
+    TEST_ASSERT_EQUAL_UINT(3, snakeLength(snake));
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+    TEST_ASSERT_EQUAL(tiles[0][0], body[2]);
+
+    printGame(game);
+}
+
 void runGameTests(void)
 {
     RUN_TEST(Game_Allocation_Should_Return_New_Game);
@@ -90,4 +168,8 @@ void runGameTests(void)
 
     RUN_TEST(Game_Should_Place_Food_On_Random_Tile);
     RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
+
+    RUN_TEST(Game_Snake_Should_Move_In_Chosen_Direction);
+    RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
+    RUN_TEST(Snake_Snake_Should_Grow_After_Eating_Food);
 }

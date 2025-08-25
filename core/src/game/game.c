@@ -66,6 +66,33 @@ void placeRandomFood(const Game* const game, const unsigned seed)
     free(state);
 }
 
+void moveSnake(const Game* const game)
+{
+    Snake* const snake = game->snake;
+    Tile* const head = snakeHead(snake);
+    const unsigned headI = tileI(head);
+    const unsigned headJ = tileJ(head);
+
+    const int vectors[4][2] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
+    const int* vector = vectors[snakeDirection(snake)];
+
+    Tile*** const tiles = gridTiles(game->grid);
+    Tile* const newHeadTile = tiles[headI + vector[0]][headJ + vector[1]];
+
+    if (tileHasFood(newHeadTile)) {
+        setTileFood(newHeadTile, false);
+        growSnake(snake);
+    }
+
+    Tile** const sbody = snakeBody(snake);
+    const unsigned length = snakeLength(snake);
+
+    for (int i = length - 1; i > 0; i--)
+        sbody[i] = sbody[i - 1];
+
+    sbody[0] = newHeadTile;
+}
+
 void printGame(const Game* const game)
 {
     const Grid* const grid = game->grid;
