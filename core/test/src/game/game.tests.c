@@ -74,6 +74,8 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
     TEST_ASSERT_EQUAL(tiles[0][2], foodTile(game));
 
     printGame(game);
+
+    freeGame(game);
 }
 
 void runGameTests(void)

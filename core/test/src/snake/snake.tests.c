@@ -133,6 +133,31 @@ void Snake_Should_Move_In_Chosen_Direction(void)
     printGame(game);
 }
 
+void Snake_Should_Eat_Food_After_Move(void)
+{
+    Game* const game = allocateGame(1, 3);
+    Snake* const snake = gameSnake(game);
+
+    placeRandomFood(game, 2);
+
+    move(snake);
+
+    Tile** const body = snakeBody(snake);
+    Grid* const grid = gameGrid(game);
+    Tile*** const tiles = gridTiles(grid);
+
+    printGame(game);
+
+    TEST_ASSERT_EQUAL_UINT(3, snakeLength(snake));
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+    TEST_ASSERT_EQUAL(tiles[0][0], body[2]);
+    TEST_ASSERT_FALSE(tileHasFood(tiles[0][2]));
+    TEST_ASSERT_NULL(foodTile(game));
+
+    freeGame(game);
+}
+
 void Snake_Should_Check_If_It_Contains_Tile(void)
 {
     Tile*** const tiles = gridTiles(grid);
@@ -156,6 +181,7 @@ void runSnakeTests(void)
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Opposite_To_Current);
 
     RUN_TEST(Snake_Should_Move_In_Chosen_Direction);
+    RUN_TEST(Snake_Should_Eat_Food_After_Move);
 
     RUN_TEST(Snake_Should_Check_If_It_Contains_Tile);
 }

@@ -90,12 +90,12 @@ static void printTile(const Tile* const tile, const Snake* const snake)
 {
     const char* directionChars[4] = { "↑", "↓", "←", "→" };
 
-    if (tileHasFood(tile))
-        printf("x ");
-    else if (tile == snakeHead(snake))
+    if (tile == snakeHead(snake))
         printf("%s ", directionChars[snakeDirection(snake)]);
     else if (tile == snakeTail(snake))
         printf("* ");
+    else if (tileHasFood(tile))
+        printf("x ");
     else if (snakeContainsTile(snake, tile))
         printf("# ");
     else
