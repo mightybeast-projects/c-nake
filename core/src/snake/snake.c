@@ -71,7 +71,7 @@ void changeDirection(Snake* const snake, const Direction direction)
     snake->direction = direction;
 }
 
-void move(Snake* const snake)
+bool move(Snake* const snake)
 {
     Tile* const head = snakeHead(snake);
     const unsigned headI = tileI(head);
@@ -92,6 +92,8 @@ void move(Snake* const snake)
         snake->body[i] = snake->body[i - 1];
 
     snake->body[0] = newHead;
+
+    return true;
 }
 
 bool snakeContainsTile(const Snake* const snake, const Tile* const tile)
