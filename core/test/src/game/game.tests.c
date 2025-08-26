@@ -2,8 +2,8 @@
 #include "game.h"
 #include "unity.h"
 
-static unsigned cols = 5;
-static unsigned rows = 5;
+static unsigned cols = 3;
+static unsigned rows = 3;
 static Game* game;
 
 static Snake* snake;
@@ -137,11 +137,6 @@ void Game_Snake_Should_Move_Left(void)
 
 void Game_Snake_Should_Wrap_Around_On_Move_If_Next_Tile_Is_Out_Of_Bounds(void)
 {
-    Game* const game = allocateGame(3, 3);
-    Snake* const snake = gameSnake(game);
-    Tile** const body = snakeBody(snake);
-    Tile*** const tiles = gridTiles(gameGrid(game));
-
     moveSnake(game);
     moveSnake(game);
 
@@ -173,8 +168,6 @@ void Game_Snake_Should_Wrap_Around_On_Move_If_Next_Tile_Is_Out_Of_Bounds(void)
     TEST_ASSERT_EQUAL(tiles[2][2], body[1]);
 
     printGame(game);
-
-    freeGame(game);
 }
 
 void Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)

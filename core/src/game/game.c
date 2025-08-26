@@ -98,7 +98,10 @@ void moveSnake(const Game* const game)
     if (tileHasFood(newHeadTile)) {
         setTileFood(newHeadTile, false);
         growSnake(snake);
-        placeRandomFood(game, time(NULL));
+
+        do
+            placeRandomFood(game, time(NULL));
+        while (foodTile(game) == newHeadTile);
     }
 
     Tile** const sbody = snakeBody(snake);
