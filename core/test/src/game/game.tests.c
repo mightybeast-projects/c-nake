@@ -120,6 +120,48 @@ void Game_Snake_Should_Move_In_Chosen_Direction(void)
     printGame(game);
 }
 
+void Game_Snake_Should_Wrap_Around_On_Move_If_Next_Tile_Is_Out_Of_Bounds(void)
+{
+    Game* const game = allocateGame(3, 3);
+    Snake* const snake = gameSnake(game);
+    Tile** const body = snakeBody(snake);
+    Tile*** const tiles = gridTiles(gameGrid(game));
+
+    moveSnake(game);
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[0][0], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][2], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, LEFT);
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[2][0], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][0], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, UP);
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[2][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[2][0], body[1]);
+
+    printGame(game);
+
+    changeDirection(snake, RIGHT);
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[2][2], body[1]);
+
+    printGame(game);
+
+    freeGame(game);
+}
+
 void Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)
 {
     setTileFood(tiles[0][2], true);
@@ -174,6 +216,7 @@ void runGameTests(void)
 
     RUN_TEST(Game_Snake_Should_Move_In_Chosen_Direction);
     RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
+    RUN_TEST(Game_Snake_Should_Wrap_Around_On_Move_If_Next_Tile_Is_Out_Of_Bounds);
     RUN_TEST(Game_Snake_Should_Grow_After_Eating_Food);
     RUN_TEST(Game_Should_Randomly_Place_Next_Food_Tile_If_Snake_Ate_After_Moving);
 }

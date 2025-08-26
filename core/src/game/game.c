@@ -71,14 +71,29 @@ void moveSnake(const Game* const game)
 {
     Snake* const snake = game->snake;
     Tile* const head = snakeHead(snake);
-    const unsigned headI = tileI(head);
-    const unsigned headJ = tileJ(head);
 
     const int vectors[4][2] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
     const int* vector = vectors[snakeDirection(snake)];
 
+    Grid* const grid = game->grid;
+    const int width = gridWidth(grid);
+    const int height = gridHeight(grid);
+    const int headI = tileI(head);
+    const int headJ = tileJ(head);
+    int tileI = headI + vector[0];
+    int tileJ = headJ + vector[1];
+
+    if (tileJ > height - 1)
+        tileJ = 0;
+    if (tileJ < 0)
+        tileJ = height - 1;
+    if (tileI > width - 1)
+        tileI = 0;
+    if (tileI < 0)
+        tileI = width - 1;
+
     Tile*** const tiles = gridTiles(game->grid);
-    Tile* const newHeadTile = tiles[headI + vector[0]][headJ + vector[1]];
+    Tile* const newHeadTile = tiles[tileI][tileJ];
 
     if (tileHasFood(newHeadTile)) {
         setTileFood(newHeadTile, false);
@@ -107,12 +122,16 @@ void printGame(const Game* const game)
     Tile** const body = snakeBody(snake);
     const unsigned length = snakeLength(snake);
 
+    printf("\n");
+
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++)
             printTile(tiles[j][i], snake);
 
         printf("\n");
     }
+
+    printf("\n");
 }
 
 static void printTile(const Tile* const tile, const Snake* const snake)
