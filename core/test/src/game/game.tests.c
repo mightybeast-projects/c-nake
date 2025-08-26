@@ -135,33 +135,54 @@ void Game_Snake_Should_Move_Left(void)
     printGame(game);
 }
 
-void Game_Snake_Should_Wrap_Around_On_Move_If_Next_Tile_Is_Out_Of_Bounds(void)
+void Game_Snake_Should_Wrap_Around_Down_Side_On_Move(void)
 {
     moveSnake(game);
+
     moveSnake(game);
 
     TEST_ASSERT_EQUAL(tiles[0][0], body[0]);
     TEST_ASSERT_EQUAL(tiles[0][2], body[1]);
 
     printGame(game);
+}
 
+void Game_Snake_Should_Wrap_Around_Left_Side_On_Move(void)
+{
     changeDirection(snake, LEFT);
+
     moveSnake(game);
 
-    TEST_ASSERT_EQUAL(tiles[2][0], body[0]);
-    TEST_ASSERT_EQUAL(tiles[0][0], body[1]);
+    TEST_ASSERT_EQUAL(tiles[2][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
 
     printGame(game);
+}
 
+void Game_Snake_Should_Wrap_Around_Up_Side_On_Move(void)
+{
+    changeDirection(snake, LEFT);
+    moveSnake(game);
     changeDirection(snake, UP);
+    moveSnake(game);
+
     moveSnake(game);
 
     TEST_ASSERT_EQUAL(tiles[2][2], body[0]);
     TEST_ASSERT_EQUAL(tiles[2][0], body[1]);
 
     printGame(game);
+}
 
+void Game_Snake_Should_Wrap_Around_Right_Side_On_Move(void)
+{
+    changeDirection(snake, LEFT);
+    moveSnake(game);
+    changeDirection(snake, UP);
+    moveSnake(game);
+    moveSnake(game);
     changeDirection(snake, RIGHT);
+
     moveSnake(game);
 
     TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
@@ -227,7 +248,10 @@ void runGameTests(void)
     RUN_TEST(Game_Snake_Should_Move_Up);
     RUN_TEST(Game_Snake_Should_Move_Left);
 
-    RUN_TEST(Game_Snake_Should_Wrap_Around_On_Move_If_Next_Tile_Is_Out_Of_Bounds);
+    RUN_TEST(Game_Snake_Should_Wrap_Around_Down_Side_On_Move);
+    RUN_TEST(Game_Snake_Should_Wrap_Around_Left_Side_On_Move);
+    RUN_TEST(Game_Snake_Should_Wrap_Around_Up_Side_On_Move);
+    RUN_TEST(Game_Snake_Should_Wrap_Around_Right_Side_On_Move);
 
     RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
     RUN_TEST(Game_Snake_Should_Grow_After_Eating_Food);
