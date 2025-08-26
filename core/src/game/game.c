@@ -80,7 +80,6 @@ void moveSnake(Game* const game)
         return;
 
     Snake* const snake = game->snake;
-    Tile* const head = snakeHead(snake);
 
     const int vectors[4][2] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
     const int* vector = vectors[snakeDirection(snake)];
@@ -88,6 +87,8 @@ void moveSnake(Game* const game)
     Grid* const grid = game->grid;
     const int width = gridWidth(grid);
     const int height = gridHeight(grid);
+
+    Tile* const head = snakeHead(snake);
     const int headI = tileI(head);
     const int headJ = tileJ(head);
 
@@ -114,6 +115,11 @@ void moveSnake(Game* const game)
 
     for (int i = length - 1; i > 0; i--)
         sbody[i] = sbody[i - 1];
+
+    if (snakeContainsTile(snake, tile)) {
+        game->isFinished = true;
+        return;
+    }
 
     sbody[0] = tile;
 
