@@ -20,6 +20,7 @@ Game* allocateGame(const unsigned cols, const unsigned rows)
 
     game->grid = allocateGrid(cols, rows);
     game->snake = allocateSnake(game->grid);
+    game->isFinished = false;
 
     return game;
 }

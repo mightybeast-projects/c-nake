@@ -223,7 +223,7 @@ void Game_Snake_Should_Grow_After_Eating_Food(void)
 
 void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One(void)
 {
-    Tile* tile = foodTile(game);
+    Tile* const tile = foodTile(game);
 
     setTileFood(tiles[0][2], true);
 
@@ -247,6 +247,8 @@ void Game_Should_Finish_If_Snake_Ate_All_Food(void)
     TEST_ASSERT_TRUE(gameIsFinished(game));
 
     printGame(game);
+
+    freeGame(game);
 }
 
 void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
@@ -261,6 +263,8 @@ void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
     TEST_ASSERT_EQUAL(snakeHead(snake), foodTile(game));
 
     printGame(game);
+
+    freeGame(game);
 }
 
 void runGameTests(void)
