@@ -235,6 +235,34 @@ void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One(void)
     printGame(game);
 }
 
+void Game_Should_Finish_If_Snake_Ate_All_Food(void)
+{
+    Game* const game = allocateGame(1, 3);
+    Tile*** const tiles = gridTiles(gameGrid(game));
+
+    placeRandomFood(game, 1);
+
+    moveSnake(game);
+
+    TEST_ASSERT_TRUE(gameIsFinished(game));
+
+    printGame(game);
+}
+
+void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
+{
+    Game* const game = allocateGame(1, 3);
+    Snake* const snake = gameSnake(game);
+    Tile*** const tiles = gridTiles(gameGrid(game));
+
+    placeRandomFood(game, 1);
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(snakeHead(snake), foodTile(game));
+
+    printGame(game);
+}
+
 void runGameTests(void)
 {
     RUN_TEST(Game_Allocation_Should_Return_New_Game);
@@ -262,4 +290,7 @@ void runGameTests(void)
     RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
     RUN_TEST(Game_Snake_Should_Grow_After_Eating_Food);
     RUN_TEST(Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One);
+
+    RUN_TEST(Game_Should_Finish_If_Snake_Ate_All_Food);
+    RUN_TEST(Game_Should_Not_Place_Food_If_It_Is_Finished);
 }

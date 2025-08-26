@@ -73,7 +73,7 @@ void placeRandomFood(const Game* const game, const unsigned seed)
     free(state);
 }
 
-void moveSnake(const Game* const game)
+void moveSnake(Game* const game)
 {
     Snake* const snake = game->snake;
     Tile* const head = snakeHead(snake);
@@ -102,11 +102,8 @@ void moveSnake(const Game* const game)
     Tile*** const tiles = gridTiles(game->grid);
     Tile* const newHeadTile = tiles[tileI][tileJ];
 
-    if (tileHasFood(newHeadTile)) {
-        placeRandomFood(game, time(NULL));
-        setTileFood(newHeadTile, false);
+    if (tileHasFood(newHeadTile))
         growSnake(snake);
-    }
 
     Tile** const sbody = snakeBody(snake);
     const unsigned length = snakeLength(snake);
@@ -115,6 +112,14 @@ void moveSnake(const Game* const game)
         sbody[i] = sbody[i - 1];
 
     sbody[0] = newHeadTile;
+
+    if (snakeLength(snake) == width * height)
+        game->isFinished = true;
+
+    if (tileHasFood(newHeadTile) && !game->isFinished) {
+        placeRandomFood(game, time(NULL));
+        setTileFood(newHeadTile, false);
+    }
 }
 
 void printGame(const Game* const game)

@@ -15,6 +15,6 @@ Snake* gameSnake(const Game* const game);
 Tile* foodTile(const Game* const game);
 void placeRandomFood(const Game* const game, const unsigned seed);
 
-void moveSnake(const Game* const game);
+void moveSnake(Game* const game);
 
 void printGame(const Game* const game);
