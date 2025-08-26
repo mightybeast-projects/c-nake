@@ -267,6 +267,25 @@ void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
     freeGame(game);
 }
 
+void Game_Should_Not_Move_Snake_If_It_Is_Finished(void)
+{
+    Game* const game = allocateGame(1, 3);
+    Snake* const snake = gameSnake(game);
+    Tile*** const tiles = gridTiles(gameGrid(game));
+
+    placeRandomFood(game, 1);
+    moveSnake(game);
+
+    moveSnake(game);
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[0][2], snakeHead(snake));
+
+    printGame(game);
+
+    freeGame(game);
+}
+
 void runGameTests(void)
 {
     RUN_TEST(Game_Allocation_Should_Return_New_Game);
@@ -297,4 +316,5 @@ void runGameTests(void)
 
     RUN_TEST(Game_Should_Finish_If_Snake_Ate_All_Food);
     RUN_TEST(Game_Should_Not_Place_Food_If_It_Is_Finished);
+    RUN_TEST(Game_Should_Not_Move_Snake_If_It_Is_Finished);
 }
