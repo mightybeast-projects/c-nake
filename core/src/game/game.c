@@ -15,7 +15,7 @@ static void printTile(const Tile* const tile, const Snake* const snake);
 
 Game* allocateGame(const unsigned cols, const unsigned rows)
 {
-    Game* game = safeMalloc(sizeof(struct Game));
+    Game* const game = safeMalloc(sizeof(struct Game));
 
     game->grid = allocateGrid(cols, rows);
     game->snake = allocateSnake(game->grid);

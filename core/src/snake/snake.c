@@ -9,18 +9,16 @@ struct Snake
     Direction direction;
 };
 
-static bool directionsAreOpposite(Direction a, Direction b);
+static Tile** allocateBody(const Grid* const grid);
+static bool directionsAreOpposite(const Direction a, const Direction b);
 
 Snake* allocateSnake(Grid* const grid)
 {
-    Snake* snake = safeMalloc(sizeof(struct Snake));
+    Snake* const snake = safeMalloc(sizeof(struct Snake));
 
-    snake->body = safeMalloc(sizeof(Tile*) * gridWidth(grid) * gridHeight(grid));
+    snake->body = allocateBody(grid);
     snake->length = 2;
     snake->direction = DOWN;
-
-    snake->body[0] = gridTiles(grid)[0][1];
-    snake->body[1] = gridTiles(grid)[0][0];
 
     return snake;
 }
@@ -78,7 +76,23 @@ bool snakeContainsTile(const Snake* const snake, const Tile* const tile)
     return false;
 }
 
-static bool directionsAreOpposite(Direction a, Direction b)
+static Tile** allocateBody(const Grid* const grid)
+{
+    const unsigned width = gridWidth(grid);
+    const unsigned height = gridHeight(grid);
+
+    Tile** const body = safeMalloc(sizeof(Tile*) * width * height);
+
+    for (int i = 0; i < width * height; i++)
+        body[i] = NULL;
+
+    body[0] = gridTiles(grid)[0][1];
+    body[1] = gridTiles(grid)[0][0];
+
+    return body;
+}
+
+static bool directionsAreOpposite(const Direction a, const Direction b)
 {
     return (a == DOWN && b == UP) || (a == UP && b == DOWN)
         || (a == RIGHT && b == LEFT) || (a == LEFT && b == RIGHT);

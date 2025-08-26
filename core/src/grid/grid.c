@@ -20,7 +20,7 @@ Grid* allocateGrid(const unsigned cols, const unsigned rows)
     if (zeroSize || lessThanThreeRows)
         return NULL;
 
-    Grid* grid = safeMalloc(sizeof(struct Grid));
+    Grid* const grid = safeMalloc(sizeof(struct Grid));
 
     grid->width = cols;
     grid->height = rows;
