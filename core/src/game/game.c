@@ -103,12 +103,9 @@ void moveSnake(const Game* const game)
     Tile* const newHeadTile = tiles[tileI][tileJ];
 
     if (tileHasFood(newHeadTile)) {
+        placeRandomFood(game, time(NULL));
         setTileFood(newHeadTile, false);
         growSnake(snake);
-
-        do
-            placeRandomFood(game, time(NULL));
-        while (foodTile(game) == newHeadTile);
     }
 
     Tile** const sbody = snakeBody(snake);
@@ -169,7 +166,7 @@ static Tile* chooseRandomTile(const Game* game, MTState* const state)
 
     Tile* const tile = gridTiles(grid)[i][j];
 
-    if (snakeContainsTile(game->snake, tile))
+    if (snakeContainsTile(game->snake, tile) || foodTile(game) == tile)
         return chooseRandomTile(game, state);
 
     return tile;
