@@ -22,7 +22,7 @@ Tile* snakeTail(const Snake* const snake);
 unsigned snakeLength(const Snake* const snake);
 Direction snakeDirection(const Snake* const snake);
 
-void changeDirection(Snake* const snake, const Direction direction);
+void changeSnakeDirection(Snake* const snake, const Direction direction);
 
 void growSnake(Snake* const snake);
 

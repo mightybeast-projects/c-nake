@@ -58,39 +58,39 @@ void Allocated_Snake_Should_Have_Down_Direction(void)
 
 void Snake_Should_Be_Able_To_Change_Direction(void)
 {
-    changeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, RIGHT);
 
     TEST_ASSERT_EQUAL(RIGHT, snakeDirection(snake));
 }
 
 void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Up_When_Current_Is_Down(void)
 {
-    changeDirection(snake, UP);
+    changeSnakeDirection(snake, UP);
 
     TEST_ASSERT_EQUAL(DOWN, snakeDirection(snake));
 }
 
 void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Left_When_Current_Is_Right(void)
 {
-    changeDirection(snake, RIGHT);
-    changeDirection(snake, LEFT);
+    changeSnakeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, LEFT);
 
     TEST_ASSERT_EQUAL(RIGHT, snakeDirection(snake));
 }
 
 void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Down_When_Current_Is_Up(void)
 {
-    changeDirection(snake, RIGHT);
-    changeDirection(snake, UP);
-    changeDirection(snake, DOWN);
+    changeSnakeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, UP);
+    changeSnakeDirection(snake, DOWN);
 
     TEST_ASSERT_EQUAL(UP, snakeDirection(snake));
 }
 
 void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Right_When_Current_Is_Left(void)
 {
-    changeDirection(snake, LEFT);
-    changeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, LEFT);
+    changeSnakeDirection(snake, RIGHT);
 
     TEST_ASSERT_EQUAL(LEFT, snakeDirection(snake));
 }

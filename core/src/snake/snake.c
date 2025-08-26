@@ -54,7 +54,7 @@ Direction snakeDirection(const Snake* const snake)
     return snake->direction;
 }
 
-void changeDirection(Snake* const snake, const Direction direction)
+void changeSnakeDirection(Snake* const snake, const Direction direction)
 {
     if (directionsAreOpposite(snake->direction, direction))
         return;

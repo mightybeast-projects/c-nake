@@ -100,7 +100,7 @@ void Game_Snake_Should_Move_Down(void)
 
 void Game_Snake_Should_Move_Right(void)
 {
-    changeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, RIGHT);
 
     moveSnake(game);
 
@@ -112,9 +112,9 @@ void Game_Snake_Should_Move_Right(void)
 
 void Game_Snake_Should_Move_Up(void)
 {
-    changeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, RIGHT);
     moveSnake(game);
-    changeDirection(snake, UP);
+    changeSnakeDirection(snake, UP);
 
     moveSnake(game);
 
@@ -126,11 +126,11 @@ void Game_Snake_Should_Move_Up(void)
 
 void Game_Snake_Should_Move_Left(void)
 {
-    changeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, RIGHT);
     moveSnake(game);
-    changeDirection(snake, UP);
+    changeSnakeDirection(snake, UP);
     moveSnake(game);
-    changeDirection(snake, LEFT);
+    changeSnakeDirection(snake, LEFT);
 
     moveSnake(game);
 
@@ -154,7 +154,7 @@ void Game_Snake_Should_Wrap_Around_Down_Side_On_Move(void)
 
 void Game_Snake_Should_Wrap_Around_Left_Side_On_Move(void)
 {
-    changeDirection(snake, LEFT);
+    changeSnakeDirection(snake, LEFT);
 
     moveSnake(game);
 
@@ -166,9 +166,9 @@ void Game_Snake_Should_Wrap_Around_Left_Side_On_Move(void)
 
 void Game_Snake_Should_Wrap_Around_Up_Side_On_Move(void)
 {
-    changeDirection(snake, LEFT);
+    changeSnakeDirection(snake, LEFT);
     moveSnake(game);
-    changeDirection(snake, UP);
+    changeSnakeDirection(snake, UP);
     moveSnake(game);
 
     moveSnake(game);
@@ -181,12 +181,12 @@ void Game_Snake_Should_Wrap_Around_Up_Side_On_Move(void)
 
 void Game_Snake_Should_Wrap_Around_Right_Side_On_Move(void)
 {
-    changeDirection(snake, LEFT);
+    changeSnakeDirection(snake, LEFT);
     moveSnake(game);
-    changeDirection(snake, UP);
+    changeSnakeDirection(snake, UP);
     moveSnake(game);
     moveSnake(game);
-    changeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, RIGHT);
 
     moveSnake(game);
 
@@ -257,7 +257,7 @@ void Game_Should_Finish_If_Snake_Eats_Itself(void)
     Snake* const snake = gameSnake(game);
     Tile*** const tiles = gridTiles(gameGrid(game));
 
-    changeDirection(snake, RIGHT);
+    changeSnakeDirection(snake, RIGHT);
 
     moveSnake(game);
 
