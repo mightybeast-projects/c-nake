@@ -83,7 +83,7 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
     freeGame(game);
 }
 
-void Game_Snake_Should_Move_In_Chosen_Direction(void)
+void Game_Snake_Should_Move_Down(void)
 {
     moveSnake(game);
 
@@ -91,31 +91,46 @@ void Game_Snake_Should_Move_In_Chosen_Direction(void)
     TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
 
     printGame(game);
+}
 
+void Game_Snake_Should_Move_Right(void)
+{
     changeDirection(snake, RIGHT);
 
     moveSnake(game);
 
-    TEST_ASSERT_EQUAL(tiles[1][2], body[0]);
-    TEST_ASSERT_EQUAL(tiles[0][2], body[1]);
+    TEST_ASSERT_EQUAL(tiles[1][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
 
     printGame(game);
+}
 
+void Game_Snake_Should_Move_Up(void)
+{
+    changeDirection(snake, RIGHT);
+    moveSnake(game);
     changeDirection(snake, UP);
 
     moveSnake(game);
 
-    TEST_ASSERT_EQUAL(tiles[1][1], body[0]);
-    TEST_ASSERT_EQUAL(tiles[1][2], body[1]);
+    TEST_ASSERT_EQUAL(tiles[1][0], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][1], body[1]);
 
     printGame(game);
+}
 
+void Game_Snake_Should_Move_Left(void)
+{
+    changeDirection(snake, RIGHT);
+    moveSnake(game);
+    changeDirection(snake, UP);
+    moveSnake(game);
     changeDirection(snake, LEFT);
 
     moveSnake(game);
 
-    TEST_ASSERT_EQUAL(tiles[0][1], body[0]);
-    TEST_ASSERT_EQUAL(tiles[1][1], body[1]);
+    TEST_ASSERT_EQUAL(tiles[0][0], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][0], body[1]);
 
     printGame(game);
 }
@@ -214,9 +229,14 @@ void runGameTests(void)
     RUN_TEST(Game_Should_Place_Food_On_Random_Tile);
     RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
 
-    RUN_TEST(Game_Snake_Should_Move_In_Chosen_Direction);
-    RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
+    RUN_TEST(Game_Snake_Should_Move_Down);
+    RUN_TEST(Game_Snake_Should_Move_Right);
+    RUN_TEST(Game_Snake_Should_Move_Up);
+    RUN_TEST(Game_Snake_Should_Move_Left);
+
     RUN_TEST(Game_Snake_Should_Wrap_Around_On_Move_If_Next_Tile_Is_Out_Of_Bounds);
+
+    RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
     RUN_TEST(Game_Snake_Should_Grow_After_Eating_Food);
     RUN_TEST(Game_Should_Randomly_Place_Next_Food_Tile_If_Snake_Ate_After_Moving);
 }
