@@ -46,6 +46,11 @@ void Allocated_Game_Should_Have_Snake(void)
     TEST_ASSERT_NOT_NULL(gameSnake(game));
 }
 
+void Allocated_Game_Should_Not_Be_Finished(void)
+{
+    TEST_ASSERT_FALSE(gameIsFinished(game));
+}
+
 void Game_Should_Be_Able_To_Get_Food_Tile(void)
 {
     placeRandomFood(game, 1);
@@ -216,7 +221,7 @@ void Game_Snake_Should_Grow_After_Eating_Food(void)
     printGame(game);
 }
 
-void Game_Should_Randomly_Place_Next_Food_Tile_If_Snake_Ate_After_Moving(void)
+void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One(void)
 {
     Tile* tile = foodTile(game);
 
@@ -234,6 +239,7 @@ void runGameTests(void)
 {
     RUN_TEST(Game_Allocation_Should_Return_New_Game);
 
+    RUN_TEST(Allocated_Game_Should_Not_Be_Finished);
     RUN_TEST(Allocated_Game_Should_Have_Grid);
     RUN_TEST(Allocated_Game_Should_Have_Grid_With_Passed_Size);
     RUN_TEST(Allocated_Game_Should_Have_Snake);
@@ -255,5 +261,5 @@ void runGameTests(void)
 
     RUN_TEST(Game_Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
     RUN_TEST(Game_Snake_Should_Grow_After_Eating_Food);
-    RUN_TEST(Game_Should_Randomly_Place_Next_Food_Tile_If_Snake_Ate_After_Moving);
+    RUN_TEST(Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One);
 }

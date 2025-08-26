@@ -6,6 +6,7 @@
 
 struct Game
 {
+    bool isFinished;
     Grid* grid;
     Snake* snake;
 };
@@ -28,6 +29,11 @@ void freeGame(Game* const game)
     freeSnake(game->snake);
     freeGrid(game->grid);
     free(game);
+}
+
+bool gameIsFinished(const Game* const game)
+{
+    return game->isFinished;
 }
 
 Grid* gameGrid(const Game* const game)
@@ -80,6 +86,7 @@ void moveSnake(const Game* const game)
     const int height = gridHeight(grid);
     const int headI = tileI(head);
     const int headJ = tileJ(head);
+
     int tileI = headI + vector[0];
     int tileJ = headJ + vector[1];
 
