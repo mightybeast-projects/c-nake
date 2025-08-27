@@ -13,8 +13,8 @@ struct Game
 
 static Tile* chooseRandomTile(const Game* game, MTState* const state);
 static Tile* getNextSnakeMoveTile(const Game* const game);
-static void shiftSnake(const Game* const game);
-static void finishSnakeMove(Game* const game, Tile* const tile);
+static void shiftSnake(Snake* const snake, Tile* const tile);
+static void checkFinishConditions(Game* const game, Tile* const tile);
 static void printTile(const Tile* const tile, const Snake* const snake);
 
 Game* allocateGame(const unsigned cols, const unsigned rows)
@@ -84,21 +84,8 @@ void moveSnake(Game* const game)
 
     Tile* const tile = getNextSnakeMoveTile(game);
 
-    Snake* const snake = game->snake;
-
-    if (tileHasFood(tile))
-        growSnake(snake);
-
-    shiftSnake(game);
-
-    if (snakeContainsTile(snake, tile)) {
-        game->isFinished = true;
-        return;
-    }
-
-    snakeBody(snake)[0] = tile;
-
-    finishSnakeMove(game, tile);
+    shiftSnake(game->snake, tile);
+    checkFinishConditions(game, tile);
 }
 
 void printGame(const Game* const game)
@@ -157,21 +144,31 @@ static Tile* getNextSnakeMoveTile(const Game* const game)
     return tiles[tileI][tileJ];
 }
 
-static void shiftSnake(const Game* const game)
+static void shiftSnake(Snake* const snake, Tile* const tile)
 {
-    Tile** const body = snakeBody(game->snake);
-    const unsigned length = snakeLength(game->snake);
+    if (tileHasFood(tile))
+        growSnake(snake);
+
+    Tile** const body = snakeBody(snake);
+    const unsigned length = snakeLength(snake);
 
     for (int i = length - 1; i > 0; i--)
         body[i] = body[i - 1];
+
+    body[0] = tile;
 }
 
-static void finishSnakeMove(Game* const game, Tile* const tile)
+static void checkFinishConditions(Game* const game, Tile* const tile)
 {
+    const Snake* const snake = game->snake;
     const unsigned width = gridWidth(game->grid);
     const unsigned height = gridHeight(game->grid);
 
-    game->isFinished = snakeLength(game->snake) == width * height;
+    if (snakeEatsItself(snake) || snakeLength(snake) == width * height) {
+        game->isFinished = true;
+
+        return;
+    }
 
     if (tileHasFood(tile) && !game->isFinished) {
         setTileFood(tile, false);
