@@ -14,6 +14,6 @@ Snake* gameSnake(const Game* const game);
 
 Tile* foodTile(const Game* const game);
 
-void moveSnake(Game* const game);
+void updateGame(Game* const game);
 
 void printGame(const Game* const game);

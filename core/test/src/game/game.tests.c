@@ -2,7 +2,7 @@
 #include "game.h"
 #include "unity.h"
 
-static unsigned cols = 3;
+static unsigned cols = 1;
 static unsigned rows = 3;
 static unsigned seed = 1;
 static Game* game;
@@ -83,137 +83,60 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
     freeGame(game);
 }
 
-void Game_Snake_Should_Wrap_Around_Down_Side_On_Move(void)
-{
-    moveSnake(game);
-
-    moveSnake(game);
-
-    TEST_ASSERT_EQUAL(tiles[0][0], body[0]);
-    TEST_ASSERT_EQUAL(tiles[0][2], body[1]);
-
-    printGame(game);
-}
-
-void Game_Snake_Should_Wrap_Around_Left_Side_On_Move(void)
-{
-    changeSnakeDirection(snake, LEFT);
-
-    moveSnake(game);
-
-    TEST_ASSERT_EQUAL(tiles[2][1], body[0]);
-    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
-
-    printGame(game);
-}
-
-void Game_Snake_Should_Wrap_Around_Up_Side_On_Move(void)
-{
-    changeSnakeDirection(snake, LEFT);
-    moveSnake(game);
-    changeSnakeDirection(snake, UP);
-    moveSnake(game);
-
-    moveSnake(game);
-
-    TEST_ASSERT_EQUAL(tiles[2][2], body[0]);
-    TEST_ASSERT_EQUAL(tiles[2][0], body[1]);
-
-    printGame(game);
-}
-
-void Game_Snake_Should_Wrap_Around_Right_Side_On_Move(void)
-{
-    changeSnakeDirection(snake, LEFT);
-    moveSnake(game);
-    changeSnakeDirection(snake, UP);
-    moveSnake(game);
-    moveSnake(game);
-    changeSnakeDirection(snake, RIGHT);
-
-    moveSnake(game);
-
-    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
-    TEST_ASSERT_EQUAL(tiles[2][2], body[1]);
-
-    printGame(game);
-}
-
-void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One(void)
+void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One_On_Update(void)
 {
     Game* const game = allocateGame(2, 3, 3);
     Tile* const tile = foodTile(game);
 
-    moveSnake(game);
+    updateGame(game);
 
     TEST_ASSERT_NOT_NULL(foodTile(game));
     TEST_ASSERT_NOT_EQUAL(foodTile(game), tile);
 
     printGame(game);
-}
-
-void Game_Should_Finish_If_Snake_Ate_All_Food(void)
-{
-    Game* const game = allocateGame(1, 3, 1);
-    Tile*** const tiles = gridTiles(gameGrid(game));
-
-    moveSnake(game);
-
-    TEST_ASSERT_TRUE(gameIsFinished(game));
-
-    printGame(game);
 
     freeGame(game);
 }
 
-void Game_Should_Finish_If_Snake_Eats_Itself(void)
+void Game_Should_Finish_If_Snake_Ate_All_Food_On_Update(void)
 {
-    Game* const game = allocateGame(1, 3, 1);
-    Snake* const snake = gameSnake(game);
-    Tile*** const tiles = gridTiles(gameGrid(game));
+    updateGame(game);
 
+    TEST_ASSERT_TRUE(gameIsFinished(game));
+
+    printGame(game);
+}
+
+void Game_Should_Finish_If_Snake_Eats_Itself_On_Update(void)
+{
     changeSnakeDirection(snake, RIGHT);
 
-    moveSnake(game);
+    updateGame(game);
 
     TEST_ASSERT_TRUE(gameIsFinished(game));
 
     printGame(game);
-
-    freeGame(game);
 }
 
-void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
+void Game_Should_Not_Place_Food_On_Update_If_It_Is_Finished(void)
 {
-    Game* const game = allocateGame(1, 3, 1);
-    Snake* const snake = gameSnake(game);
-    Tile*** const tiles = gridTiles(gameGrid(game));
-
-    moveSnake(game);
+    updateGame(game);
 
     TEST_ASSERT_NULL(foodTile(game));
 
     printGame(game);
-
-    freeGame(game);
 }
 
-void Game_Should_Not_Move_Snake_If_It_Is_Finished(void)
+void Game_Should_Not_Move_Snake_On_Update_If_It_Is_Finished(void)
 {
-    Game* const game = allocateGame(1, 3, 1);
-    Snake* const snake = gameSnake(game);
-    Tile*** const tiles = gridTiles(gameGrid(game));
+    updateGame(game);
 
-    moveSnake(game);
-
-    moveSnake(game);
-    moveSnake(game);
+    updateGame(game);
+    updateGame(game);
 
     TEST_ASSERT_EQUAL(tiles[0][2], snakeHead(snake));
 
     printGame(game);
-
-    freeGame(game);
 }
 
 void runGameTests(void)
@@ -230,15 +153,10 @@ void runGameTests(void)
 
     RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
 
-    RUN_TEST(Game_Snake_Should_Wrap_Around_Down_Side_On_Move);
-    RUN_TEST(Game_Snake_Should_Wrap_Around_Left_Side_On_Move);
-    RUN_TEST(Game_Snake_Should_Wrap_Around_Up_Side_On_Move);
-    RUN_TEST(Game_Snake_Should_Wrap_Around_Right_Side_On_Move);
+    RUN_TEST(Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One_On_Update);
+    RUN_TEST(Game_Should_Finish_If_Snake_Ate_All_Food_On_Update);
+    RUN_TEST(Game_Should_Finish_If_Snake_Eats_Itself_On_Update);
 
-    RUN_TEST(Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One);
-
-    RUN_TEST(Game_Should_Finish_If_Snake_Ate_All_Food);
-    RUN_TEST(Game_Should_Finish_If_Snake_Eats_Itself);
-    RUN_TEST(Game_Should_Not_Place_Food_If_It_Is_Finished);
-    RUN_TEST(Game_Should_Not_Move_Snake_If_It_Is_Finished);
+    RUN_TEST(Game_Should_Not_Place_Food_On_Update_If_It_Is_Finished);
+    RUN_TEST(Game_Should_Not_Move_Snake_On_Update_If_It_Is_Finished);
 }

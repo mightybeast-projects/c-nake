@@ -5,17 +5,20 @@
 struct Snake
 {
     unsigned length;
+    Grid* grid;
     Tile** body;
     Direction direction;
 };
 
 static Tile** allocateBody(const Grid* const grid);
+static Tile* getNextSnakeMoveTile(const Snake* const snake);
 static bool directionsAreOpposite(const Direction a, const Direction b);
 
 Snake* allocateSnake(Grid* const grid)
 {
     Snake* const snake = safeMalloc(sizeof(struct Snake));
 
+    snake->grid = grid;
     snake->body = allocateBody(grid);
     snake->length = 2;
     snake->direction = DOWN;
@@ -54,6 +57,11 @@ Direction snakeDirection(const Snake* const snake)
     return snake->direction;
 }
 
+Grid* snakeGrid(const Snake* const snake)
+{
+    return snake->grid;
+}
+
 void changeSnakeDirection(Snake* const snake, const Direction direction)
 {
     if (directionsAreOpposite(snake->direction, direction))
@@ -62,8 +70,10 @@ void changeSnakeDirection(Snake* const snake, const Direction direction)
     snake->direction = direction;
 }
 
-void shiftSnake(Snake* const snake, Tile* const tile)
+void moveSnake(Snake* const snake)
 {
+    Tile* tile = getNextSnakeMoveTile(snake);
+
     if (tileHasFood(tile)) {
         setTileFood(tile, false);
         snake->length++;
@@ -107,6 +117,36 @@ static Tile** allocateBody(const Grid* const grid)
     body[1] = gridTiles(grid)[0][0];
 
     return body;
+}
+
+static Tile* getNextSnakeMoveTile(const Snake* const snake)
+{
+    const Grid* const grid = snake->grid;
+    const int width = gridWidth(grid);
+    const int height = gridHeight(grid);
+
+    const int vectors[4][2] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
+    const int* vector = vectors[snakeDirection(snake)];
+
+    Tile* const head = snakeHead(snake);
+    const int headI = tileI(head);
+    const int headJ = tileJ(head);
+
+    int tileI = headI + vector[0];
+    int tileJ = headJ + vector[1];
+
+    if (tileJ > height - 1)
+        tileJ = 0;
+    if (tileJ < 0)
+        tileJ = height - 1;
+    if (tileI > width - 1)
+        tileI = 0;
+    if (tileI < 0)
+        tileI = width - 1;
+
+    Tile*** const tiles = gridTiles(grid);
+
+    return tiles[tileI][tileJ];
 }
 
 static bool directionsAreOpposite(const Direction a, const Direction b)

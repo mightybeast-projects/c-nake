@@ -21,10 +21,11 @@ Tile* snakeHead(const Snake* const snake);
 Tile* snakeTail(const Snake* const snake);
 unsigned snakeLength(const Snake* const snake);
 Direction snakeDirection(const Snake* const snake);
+Grid* snakeGrid(const Snake* const snake);
 
 void changeSnakeDirection(Snake* const snake, const Direction direction);
 
-void shiftSnake(Snake* const snake, Tile* const tile);
+void moveSnake(Snake* const snake);
 
 bool snakeContainsTile(const Snake* const snake, const Tile* const tile);
 

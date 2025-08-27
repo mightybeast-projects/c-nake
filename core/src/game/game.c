@@ -13,8 +13,6 @@ struct Game
 
 static void placeRandomFood(const Game* const game, const unsigned seed);
 static Tile* chooseRandomTile(const Game* game, MTState* const state);
-static Tile* getNextSnakeMoveTile(const Game* const game);
-static void checkFinishConditions(Game* const game);
 static void printTile(const Tile* const tile, const Snake* const snake);
 
 Game* allocateGame(const unsigned cols, const unsigned rows, const unsigned seed)
@@ -80,13 +78,26 @@ void placeRandomFood(const Game* const game, const unsigned seed)
     free(state);
 }
 
-void moveSnake(Game* const game)
+void updateGame(Game* const game)
 {
     if (game->isFinished)
         return;
 
-    shiftSnake(game->snake, getNextSnakeMoveTile(game));
-    checkFinishConditions(game);
+    const Snake* const snake = game->snake;
+
+    moveSnake(snake);
+
+    const unsigned width = gridWidth(game->grid);
+    const unsigned height = gridHeight(game->grid);
+
+    if (snakeEatsItself(snake) || snakeLength(snake) == width * height) {
+        game->isFinished = true;
+
+        return;
+    }
+
+    if (!game->isFinished && !foodTile(game))
+        placeRandomFood(game, game->seed);
 }
 
 void printGame(const Game* const game)
@@ -111,54 +122,6 @@ void printGame(const Game* const game)
     }
 
     printf("\n");
-}
-
-static Tile* getNextSnakeMoveTile(const Game* const game)
-{
-    const Grid* const grid = game->grid;
-    const Snake* const snake = game->snake;
-
-    const int width = gridWidth(grid);
-    const int height = gridHeight(grid);
-
-    const int vectors[4][2] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
-    const int* vector = vectors[snakeDirection(snake)];
-
-    Tile* const head = snakeHead(snake);
-    const int headI = tileI(head);
-    const int headJ = tileJ(head);
-
-    int tileI = headI + vector[0];
-    int tileJ = headJ + vector[1];
-
-    if (tileJ > height - 1)
-        tileJ = 0;
-    if (tileJ < 0)
-        tileJ = height - 1;
-    if (tileI > width - 1)
-        tileI = 0;
-    if (tileI < 0)
-        tileI = width - 1;
-
-    Tile*** const tiles = gridTiles(grid);
-
-    return tiles[tileI][tileJ];
-}
-
-static void checkFinishConditions(Game* const game)
-{
-    const Snake* const snake = game->snake;
-    const unsigned width = gridWidth(game->grid);
-    const unsigned height = gridHeight(game->grid);
-
-    if (snakeEatsItself(snake) || snakeLength(snake) == width * height) {
-        game->isFinished = true;
-
-        return;
-    }
-
-    if (!game->isFinished && !foodTile(game))
-        placeRandomFood(game, game->seed);
 }
 
 static void printTile(const Tile* const tile, const Snake* const snake)

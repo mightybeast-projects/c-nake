@@ -58,6 +58,11 @@ void Allocated_Snake_Should_Have_Down_Direction(void)
     TEST_ASSERT_EQUAL(DOWN, snakeDirection(snake));
 }
 
+void Allocated_Snake_Should_Know_About_Grid()
+{
+    TEST_ASSERT_EQUAL(grid, snakeGrid(snake));
+}
+
 void Snake_Should_Be_Able_To_Change_Direction(void)
 {
     changeSnakeDirection(snake, RIGHT);
@@ -97,9 +102,9 @@ void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Right_When_Curren
     TEST_ASSERT_EQUAL(LEFT, snakeDirection(snake));
 }
 
-void Snake_Should_Shift_Down(void)
+void Snake_Should_Move_Down(void)
 {
-    moveSnake(game);
+    moveSnake(snake);
 
     TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
     TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
@@ -107,11 +112,11 @@ void Snake_Should_Shift_Down(void)
     printGame(game);
 }
 
-void Snake_Should_Shift_Right(void)
+void Snake_Should_Move_Right(void)
 {
     changeSnakeDirection(snake, RIGHT);
 
-    moveSnake(game);
+    moveSnake(snake);
 
     TEST_ASSERT_EQUAL(tiles[1][1], body[0]);
     TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
@@ -119,13 +124,13 @@ void Snake_Should_Shift_Right(void)
     printGame(game);
 }
 
-void Snake_Should_Shift_Up(void)
+void Snake_Should_Move_Up(void)
 {
     changeSnakeDirection(snake, RIGHT);
-    moveSnake(game);
+    moveSnake(snake);
     changeSnakeDirection(snake, UP);
 
-    moveSnake(game);
+    moveSnake(snake);
 
     TEST_ASSERT_EQUAL(tiles[1][0], body[0]);
     TEST_ASSERT_EQUAL(tiles[1][1], body[1]);
@@ -133,18 +138,74 @@ void Snake_Should_Shift_Up(void)
     printGame(game);
 }
 
-void Snake_Should_Shift_Left(void)
+void Snake_Should_Move_Left(void)
 {
     changeSnakeDirection(snake, RIGHT);
-    moveSnake(game);
+    moveSnake(snake);
     changeSnakeDirection(snake, UP);
-    moveSnake(game);
+    moveSnake(snake);
     changeSnakeDirection(snake, LEFT);
 
-    moveSnake(game);
+    moveSnake(snake);
 
     TEST_ASSERT_EQUAL(tiles[0][0], body[0]);
     TEST_ASSERT_EQUAL(tiles[1][0], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Wrap_Around_Lower_Side_Of_The_Grid_On_Move(void)
+{
+    moveSnake(snake);
+
+    moveSnake(snake);
+
+    TEST_ASSERT_EQUAL(tiles[0][0], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][2], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Wrap_Around_Left_Side_Of_The_Grid_On_Move(void)
+{
+    changeSnakeDirection(snake, LEFT);
+
+    moveSnake(snake);
+
+    TEST_ASSERT_EQUAL(tiles[2][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Wrap_Around_Upper_Side_Of_The_Grid_On_Move(void)
+{
+    changeSnakeDirection(snake, LEFT);
+    moveSnake(snake);
+    changeSnakeDirection(snake, UP);
+    moveSnake(snake);
+
+    moveSnake(snake);
+
+    TEST_ASSERT_EQUAL(tiles[2][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[2][0], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Wrap_Around_Right_Side_Of_The_Grid_On_Move(void)
+{
+    changeSnakeDirection(snake, LEFT);
+    moveSnake(snake);
+    changeSnakeDirection(snake, UP);
+    moveSnake(snake);
+    moveSnake(snake);
+    changeSnakeDirection(snake, RIGHT);
+
+    moveSnake(snake);
+
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[2][2], body[1]);
 
     printGame(game);
 }
@@ -153,7 +214,7 @@ void Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)
 {
     setTileFood(tiles[0][2], true);
 
-    moveSnake(game);
+    moveSnake(snake);
 
     TEST_ASSERT_FALSE(tileHasFood(tiles[0][2]));
 
@@ -164,7 +225,7 @@ void Snake_Should_Grow_After_Eating_Food_On_Shift(void)
 {
     setTileFood(tiles[0][2], true);
 
-    moveSnake(game);
+    moveSnake(snake);
 
     TEST_ASSERT_EQUAL_UINT(3, snakeLength(snake));
     TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
@@ -196,6 +257,7 @@ void runSnakeTests(void)
     RUN_TEST(Allocated_Snake_Should_Have_Head);
     RUN_TEST(Allocated_Snake_Should_Have_Tail);
     RUN_TEST(Allocated_Snake_Should_Have_Down_Direction);
+    RUN_TEST(Allocated_Snake_Should_Know_About_Grid);
 
     RUN_TEST(Snake_Should_Be_Able_To_Change_Direction);
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Up_When_Current_Is_Down);
@@ -203,10 +265,15 @@ void runSnakeTests(void)
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Up_When_Current_Is_Down);
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Right_When_Current_Is_Left);
 
-    RUN_TEST(Snake_Should_Shift_Down);
-    RUN_TEST(Snake_Should_Shift_Right);
-    RUN_TEST(Snake_Should_Shift_Up);
-    RUN_TEST(Snake_Should_Shift_Left);
+    RUN_TEST(Snake_Should_Move_Down);
+    RUN_TEST(Snake_Should_Move_Right);
+    RUN_TEST(Snake_Should_Move_Up);
+    RUN_TEST(Snake_Should_Move_Left);
+
+    RUN_TEST(Snake_Should_Wrap_Around_Lower_Side_Of_The_Grid_On_Move);
+    RUN_TEST(Snake_Should_Wrap_Around_Left_Side_Of_The_Grid_On_Move);
+    RUN_TEST(Snake_Should_Wrap_Around_Upper_Side_Of_The_Grid_On_Move);
+    RUN_TEST(Snake_Should_Wrap_Around_Right_Side_Of_The_Grid_On_Move);
 
     RUN_TEST(Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
     RUN_TEST(Snake_Should_Grow_After_Eating_Food_On_Shift);
