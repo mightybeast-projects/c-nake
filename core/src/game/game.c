@@ -2,27 +2,31 @@
 #include "mersenne-twister.h"
 #include "safe-memory.h"
 #include "stdio.h"
-#include "time.h"
 
 struct Game
 {
+    unsigned seed;
     bool isFinished;
     Grid* grid;
     Snake* snake;
 };
 
+static void placeRandomFood(const Game* const game, const unsigned seed);
 static Tile* chooseRandomTile(const Game* game, MTState* const state);
 static Tile* getNextSnakeMoveTile(const Game* const game);
 static void checkFinishConditions(Game* const game);
 static void printTile(const Tile* const tile, const Snake* const snake);
 
-Game* allocateGame(const unsigned cols, const unsigned rows)
+Game* allocateGame(const unsigned cols, const unsigned rows, const unsigned seed)
 {
     Game* const game = safeMalloc(sizeof(struct Game));
 
+    game->seed = seed;
+    game->isFinished = false;
     game->grid = allocateGrid(cols, rows);
     game->snake = allocateSnake(game->grid);
-    game->isFinished = false;
+
+    placeRandomFood(game, seed);
 
     return game;
 }
@@ -154,7 +158,7 @@ static void checkFinishConditions(Game* const game)
     }
 
     if (!game->isFinished && !foodTile(game))
-        placeRandomFood(game, time(NULL));
+        placeRandomFood(game, game->seed);
 }
 
 static void printTile(const Tile* const tile, const Snake* const snake)

@@ -4,6 +4,7 @@
 
 static unsigned cols = 3;
 static unsigned rows = 3;
+static unsigned seed = 1;
 static Game* game;
 
 static Snake* snake;
@@ -12,7 +13,7 @@ static Tile*** tiles;
 
 void setUpGame(void)
 {
-    game = allocateGame(cols, rows);
+    game = allocateGame(cols, rows, seed);
 
     snake = gameSnake(game);
     body = snakeBody(snake);
@@ -51,17 +52,8 @@ void Allocated_Game_Should_Not_Be_Finished(void)
     TEST_ASSERT_FALSE(gameIsFinished(game));
 }
 
-void Game_Should_Be_Able_To_Get_Food_Tile(void)
+void Allocated_Game_Should_Place_Food_On_Random_Tile(void)
 {
-    placeRandomFood(game, 1);
-
-    TEST_ASSERT_NOT_NULL(foodTile(game));
-}
-
-void Game_Should_Place_Food_On_Random_Tile(void)
-{
-    placeRandomFood(game, 6);
-
     int foodTilesCnt = 0;
 
     for (int i = 0; i < cols; i++)
@@ -74,25 +66,21 @@ void Game_Should_Place_Food_On_Random_Tile(void)
     printGame(game);
 }
 
+void Game_Should_Be_Able_To_Get_Food_Tile(void)
+{
+    TEST_ASSERT_NOT_NULL(foodTile(game));
+}
+
 void Game_Should_Not_Place_Food_On_Snake_Body(void)
 {
-    Game* const game = allocateGame(1, 3);
+    Game* const game = allocateGame(1, 3, 2);
     Tile*** const tiles = gridTiles(gameGrid(game));
-
-    placeRandomFood(game, 2);
 
     TEST_ASSERT_EQUAL(tiles[0][2], foodTile(game));
 
     printGame(game);
 
     freeGame(game);
-}
-
-void Game_Should_Place_Food_After_Snake_Move_Even_If_It_Did_Not_Have_One(void)
-{
-    moveSnake(game);
-
-    TEST_ASSERT_NOT_NULL(foodTile(game));
 }
 
 void Game_Snake_Should_Wrap_Around_Down_Side_On_Move(void)
@@ -153,9 +141,8 @@ void Game_Snake_Should_Wrap_Around_Right_Side_On_Move(void)
 
 void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One(void)
 {
+    Game* const game = allocateGame(2, 3, 3);
     Tile* const tile = foodTile(game);
-
-    setTileFood(tiles[0][2], true);
 
     moveSnake(game);
 
@@ -167,10 +154,8 @@ void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One(void)
 
 void Game_Should_Finish_If_Snake_Ate_All_Food(void)
 {
-    Game* const game = allocateGame(1, 3);
+    Game* const game = allocateGame(1, 3, 1);
     Tile*** const tiles = gridTiles(gameGrid(game));
-
-    placeRandomFood(game, 1);
 
     moveSnake(game);
 
@@ -183,7 +168,7 @@ void Game_Should_Finish_If_Snake_Ate_All_Food(void)
 
 void Game_Should_Finish_If_Snake_Eats_Itself(void)
 {
-    Game* const game = allocateGame(1, 3);
+    Game* const game = allocateGame(1, 3, 1);
     Snake* const snake = gameSnake(game);
     Tile*** const tiles = gridTiles(gameGrid(game));
 
@@ -200,11 +185,10 @@ void Game_Should_Finish_If_Snake_Eats_Itself(void)
 
 void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
 {
-    Game* const game = allocateGame(1, 3);
+    Game* const game = allocateGame(1, 3, 1);
     Snake* const snake = gameSnake(game);
     Tile*** const tiles = gridTiles(gameGrid(game));
 
-    placeRandomFood(game, 1);
     moveSnake(game);
 
     TEST_ASSERT_NULL(foodTile(game));
@@ -216,11 +200,10 @@ void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
 
 void Game_Should_Not_Move_Snake_If_It_Is_Finished(void)
 {
-    Game* const game = allocateGame(1, 3);
+    Game* const game = allocateGame(1, 3, 1);
     Snake* const snake = gameSnake(game);
     Tile*** const tiles = gridTiles(gameGrid(game));
 
-    placeRandomFood(game, 1);
     moveSnake(game);
 
     moveSnake(game);
@@ -241,12 +224,11 @@ void runGameTests(void)
     RUN_TEST(Allocated_Game_Should_Have_Grid);
     RUN_TEST(Allocated_Game_Should_Have_Grid_With_Passed_Size);
     RUN_TEST(Allocated_Game_Should_Have_Snake);
+    RUN_TEST(Allocated_Game_Should_Place_Food_On_Random_Tile);
 
     RUN_TEST(Game_Should_Be_Able_To_Get_Food_Tile);
 
-    RUN_TEST(Game_Should_Place_Food_On_Random_Tile);
     RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
-    RUN_TEST(Game_Should_Place_Food_After_Snake_Move_Even_If_It_Did_Not_Have_One);
 
     RUN_TEST(Game_Snake_Should_Wrap_Around_Down_Side_On_Move);
     RUN_TEST(Game_Snake_Should_Wrap_Around_Left_Side_On_Move);

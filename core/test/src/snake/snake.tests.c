@@ -11,7 +11,7 @@ static Tile*** tiles;
 
 void setUpSnake(void)
 {
-    game = allocateGame(3, 3);
+    game = allocateGame(3, 3, 1);
 
     grid = gameGrid(game);
     snake = gameSnake(game);
