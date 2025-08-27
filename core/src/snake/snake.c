@@ -76,6 +76,15 @@ bool snakeContainsTile(const Snake* const snake, const Tile* const tile)
     return false;
 }
 
+bool snakeEatsItself(const Snake* const snake)
+{
+    for (int i = snake->length - 1; i > 0; i--)
+        if (snake->body[i] == snake->body[0])
+            return true;
+
+    return false;
+}
+
 static Tile** allocateBody(const Grid* const grid)
 {
     const unsigned width = gridWidth(grid);

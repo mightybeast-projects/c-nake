@@ -109,6 +109,15 @@ void Snake_Should_Grow(void)
     TEST_ASSERT_EQUAL_UINT(3, snakeLength(snake));
 }
 
+void Snake_Should_Check_If_It_Eats_Itself(void)
+{
+    Tile** const body = snakeBody(snake);
+
+    body[0] = body[1];
+
+    TEST_ASSERT_TRUE(snakeEatsItself(snake));
+}
+
 void runSnakeTests(void)
 {
     RUN_TEST(Snake_Allocation_Should_Return_New_Snake);
@@ -127,4 +136,6 @@ void runSnakeTests(void)
     RUN_TEST(Snake_Should_Check_If_It_Contains_Tile);
 
     RUN_TEST(Snake_Should_Grow);
+
+    RUN_TEST(Snake_Should_Check_If_It_Eats_Itself);
 }

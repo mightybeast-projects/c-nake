@@ -27,3 +27,5 @@ void changeSnakeDirection(Snake* const snake, const Direction direction);
 void growSnake(Snake* const snake);
 
 bool snakeContainsTile(const Snake* const snake, const Tile* const tile);
+
+bool snakeEatsItself(const Snake* const snake);
