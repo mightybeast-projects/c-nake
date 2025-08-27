@@ -13,7 +13,7 @@ struct Game
 
 static Tile* chooseRandomTile(const Game* game, MTState* const state);
 static Tile* getNextSnakeMoveTile(const Game* const game);
-static void checkFinishConditions(Game* const game, Tile* const tile);
+static void checkFinishConditions(Game* const game);
 static void printTile(const Tile* const tile, const Snake* const snake);
 
 Game* allocateGame(const unsigned cols, const unsigned rows)
@@ -81,10 +81,8 @@ void moveSnake(Game* const game)
     if (game->isFinished)
         return;
 
-    Tile* const tile = getNextSnakeMoveTile(game);
-
-    shiftSnake(game->snake, tile);
-    checkFinishConditions(game, tile);
+    shiftSnake(game->snake, getNextSnakeMoveTile(game));
+    checkFinishConditions(game);
 }
 
 void printGame(const Game* const game)
@@ -143,7 +141,7 @@ static Tile* getNextSnakeMoveTile(const Game* const game)
     return tiles[tileI][tileJ];
 }
 
-static void checkFinishConditions(Game* const game, Tile* const tile)
+static void checkFinishConditions(Game* const game)
 {
     const Snake* const snake = game->snake;
     const unsigned width = gridWidth(game->grid);
@@ -155,10 +153,8 @@ static void checkFinishConditions(Game* const game, Tile* const tile)
         return;
     }
 
-    if (tileHasFood(tile) && !game->isFinished) {
-        setTileFood(tile, false);
+    if (!game->isFinished && !foodTile(game))
         placeRandomFood(game, time(NULL));
-    }
 }
 
 static void printTile(const Tile* const tile, const Snake* const snake)

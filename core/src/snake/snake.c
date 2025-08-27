@@ -64,8 +64,10 @@ void changeSnakeDirection(Snake* const snake, const Direction direction)
 
 void shiftSnake(Snake* const snake, Tile* const tile)
 {
-    if (tileHasFood(tile))
+    if (tileHasFood(tile)) {
+        setTileFood(tile, false);
         snake->length++;
+    }
 
     for (int i = snake->length - 1; i > 0; i--)
         snake->body[i] = snake->body[i - 1];

@@ -88,6 +88,13 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
     freeGame(game);
 }
 
+void Game_Should_Place_Food_After_Snake_Move_Even_If_It_Did_Not_Have_One(void)
+{
+    moveSnake(game);
+
+    TEST_ASSERT_NOT_NULL(foodTile(game));
+}
+
 void Game_Snake_Should_Wrap_Around_Down_Side_On_Move(void)
 {
     moveSnake(game);
@@ -200,7 +207,7 @@ void Game_Should_Not_Place_Food_If_It_Is_Finished(void)
     placeRandomFood(game, 1);
     moveSnake(game);
 
-    TEST_ASSERT_EQUAL(snakeHead(snake), foodTile(game));
+    TEST_ASSERT_NULL(foodTile(game));
 
     printGame(game);
 
@@ -239,6 +246,7 @@ void runGameTests(void)
 
     RUN_TEST(Game_Should_Place_Food_On_Random_Tile);
     RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
+    RUN_TEST(Game_Should_Place_Food_After_Snake_Move_Even_If_It_Did_Not_Have_One);
 
     RUN_TEST(Game_Snake_Should_Wrap_Around_Down_Side_On_Move);
     RUN_TEST(Game_Snake_Should_Wrap_Around_Left_Side_On_Move);
