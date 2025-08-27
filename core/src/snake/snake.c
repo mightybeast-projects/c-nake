@@ -11,7 +11,7 @@ struct Snake
 };
 
 static Tile** allocateBody(const Grid* const grid);
-static Tile* getNextSnakeMoveTile(const Snake* const snake);
+static Tile* getNextMoveTile(const Snake* const snake);
 static bool directionsAreOpposite(const Direction a, const Direction b);
 
 Snake* allocateSnake(Grid* const grid)
@@ -72,7 +72,7 @@ void changeSnakeDirection(Snake* const snake, const Direction direction)
 
 void moveSnake(Snake* const snake)
 {
-    Tile* tile = getNextSnakeMoveTile(snake);
+    Tile* const tile = getNextMoveTile(snake);
 
     if (tileHasFood(tile)) {
         setTileFood(tile, false);
@@ -119,14 +119,13 @@ static Tile** allocateBody(const Grid* const grid)
     return body;
 }
 
-static Tile* getNextSnakeMoveTile(const Snake* const snake)
+static Tile* getNextMoveTile(const Snake* const snake)
 {
-    const Grid* const grid = snake->grid;
-    const int width = gridWidth(grid);
-    const int height = gridHeight(grid);
+    const int width = gridWidth(snake->grid);
+    const int height = gridHeight(snake->grid);
 
     const int vectors[4][2] = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
-    const int* vector = vectors[snakeDirection(snake)];
+    const int* const vector = vectors[snakeDirection(snake)];
 
     Tile* const head = snakeHead(snake);
     const int headI = tileI(head);
@@ -144,7 +143,7 @@ static Tile* getNextSnakeMoveTile(const Snake* const snake)
     if (tileI < 0)
         tileI = width - 1;
 
-    Tile*** const tiles = gridTiles(grid);
+    Tile*** const tiles = gridTiles(snake->grid);
 
     return tiles[tileI][tileJ];
 }

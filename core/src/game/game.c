@@ -15,16 +15,16 @@ static void placeRandomFood(const Game* const game, const unsigned seed);
 static Tile* chooseRandomTile(const Game* game, MTState* const state);
 static void printTile(const Tile* const tile, const Snake* const snake);
 
-Game* allocateGame(const unsigned cols, const unsigned rows, const unsigned seed)
+Game* allocateGame(const GameParams params)
 {
     Game* const game = safeMalloc(sizeof(struct Game));
 
-    game->seed = seed;
+    game->seed = params.seed;
     game->isFinished = false;
-    game->grid = allocateGrid(cols, rows);
+    game->grid = allocateGrid(params.cols, params.rows);
     game->snake = allocateSnake(game->grid);
 
-    placeRandomFood(game, seed);
+    placeRandomFood(game, params.seed);
 
     return game;
 }
@@ -89,10 +89,11 @@ void updateGame(Game* const game)
 
     const unsigned width = gridWidth(game->grid);
     const unsigned height = gridHeight(game->grid);
+    const bool gameLost = snakeEatsItself(snake);
+    const bool gameWon = snakeLength(snake) == width * height;
 
-    if (snakeEatsItself(snake) || snakeLength(snake) == width * height) {
+    if (gameLost || gameWon) {
         game->isFinished = true;
-
         return;
     }
 

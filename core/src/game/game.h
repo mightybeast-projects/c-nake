@@ -3,9 +3,16 @@
 #include "grid.h"
 #include "snake.h"
 
+typedef struct GameParams
+{
+    unsigned cols;
+    unsigned rows;
+    unsigned seed;
+} GameParams;
+
 typedef struct Game Game;
 
-Game* allocateGame(const unsigned cols, const unsigned rows, const unsigned seed);
+Game* allocateGame(const GameParams params);
 void freeGame(Game* const game);
 
 bool gameIsFinished(const Game* const game);

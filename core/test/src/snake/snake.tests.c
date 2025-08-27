@@ -2,7 +2,9 @@
 #include "game.h"
 #include "unity.h"
 
+static GameParams params = { 3, 3, 1 };
 static Game* game;
+
 static Grid* grid;
 static Snake* snake;
 static Tile** body;
@@ -11,7 +13,7 @@ static Tile*** tiles;
 
 void setUpSnake(void)
 {
-    game = allocateGame(3, 3, 1);
+    game = allocateGame(params);
 
     grid = gameGrid(game);
     snake = gameSnake(game);
@@ -37,8 +39,6 @@ void Allocated_Snake_Should_Have_Length_Of_Two(void)
 
 void Allocated_Snake_Should_Occupy_First_Tiles_Of_First_Two_Rows(void)
 {
-    Tile** const body = snakeBody(snake);
-
     TEST_ASSERT_EQUAL(tiles[0][1], body[0]);
     TEST_ASSERT_EQUAL(tiles[0][0], body[1]);
 }

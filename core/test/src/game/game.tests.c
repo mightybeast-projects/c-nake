@@ -2,9 +2,7 @@
 #include "game.h"
 #include "unity.h"
 
-static unsigned cols = 1;
-static unsigned rows = 3;
-static unsigned seed = 1;
+static GameParams params = { 1, 3, 1 };
 static Game* game;
 
 static Snake* snake;
@@ -13,7 +11,7 @@ static Tile*** tiles;
 
 void setUpGame(void)
 {
-    game = allocateGame(cols, rows, seed);
+    game = allocateGame(params);
 
     snake = gameSnake(game);
     body = snakeBody(snake);
@@ -37,8 +35,8 @@ void Allocated_Game_Should_Have_Grid(void)
 
 void Allocated_Game_Should_Have_Grid_With_Passed_Size(void)
 {
-    for (int i = 0; i < cols; i++)
-        for (int j = 0; j < rows; j++)
+    for (int i = 0; i < params.cols; i++)
+        for (int j = 0; j < params.rows; j++)
             TEST_ASSERT_NOT_NULL(tiles[i][j]);
 }
 
@@ -56,8 +54,8 @@ void Allocated_Game_Should_Place_Food_On_Random_Tile(void)
 {
     int foodTilesCnt = 0;
 
-    for (int i = 0; i < cols; i++)
-        for (int j = 0; j < rows; j++)
+    for (int i = 0; i < params.cols; i++)
+        for (int j = 0; j < params.rows; j++)
             if (tileHasFood(tiles[i][j]))
                 foodTilesCnt++;
 
@@ -73,7 +71,8 @@ void Game_Should_Be_Able_To_Get_Food_Tile(void)
 
 void Game_Should_Not_Place_Food_On_Snake_Body(void)
 {
-    Game* const game = allocateGame(1, 3, 2);
+    const GameParams params = { 1, 3, 2 };
+    Game* const game = allocateGame(params);
     Tile*** const tiles = gridTiles(gameGrid(game));
 
     TEST_ASSERT_EQUAL(tiles[0][2], foodTile(game));
@@ -93,7 +92,8 @@ void Game_Should_Move_Snake_On_Update(void)
 
 void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One_On_Update(void)
 {
-    Game* const game = allocateGame(2, 3, 3);
+    const GameParams params = { 2, 3, 3 };
+    Game* const game = allocateGame(params);
     Tile* const tile = foodTile(game);
 
     updateGame(game);
