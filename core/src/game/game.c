@@ -13,7 +13,6 @@ struct Game
 
 static Tile* chooseRandomTile(const Game* game, MTState* const state);
 static Tile* getNextSnakeMoveTile(const Game* const game);
-static void shiftSnake(Snake* const snake, Tile* const tile);
 static void checkFinishConditions(Game* const game, Tile* const tile);
 static void printTile(const Tile* const tile, const Snake* const snake);
 
@@ -142,20 +141,6 @@ static Tile* getNextSnakeMoveTile(const Game* const game)
     Tile*** const tiles = gridTiles(grid);
 
     return tiles[tileI][tileJ];
-}
-
-static void shiftSnake(Snake* const snake, Tile* const tile)
-{
-    if (tileHasFood(tile))
-        growSnake(snake);
-
-    Tile** const body = snakeBody(snake);
-    const unsigned length = snakeLength(snake);
-
-    for (int i = length - 1; i > 0; i--)
-        body[i] = body[i - 1];
-
-    body[0] = tile;
 }
 
 static void checkFinishConditions(Game* const game, Tile* const tile)

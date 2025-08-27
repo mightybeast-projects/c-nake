@@ -62,9 +62,15 @@ void changeSnakeDirection(Snake* const snake, const Direction direction)
     snake->direction = direction;
 }
 
-void growSnake(Snake* const snake)
+void shiftSnake(Snake* const snake, Tile* const tile)
 {
-    snake->length++;
+    if (tileHasFood(tile))
+        snake->length++;
+
+    for (int i = snake->length - 1; i > 0; i--)
+        snake->body[i] = snake->body[i - 1];
+
+    snake->body[0] = tile;
 }
 
 bool snakeContainsTile(const Snake* const snake, const Tile* const tile)

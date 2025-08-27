@@ -5,15 +5,17 @@
 static Game* game;
 static Grid* grid;
 static Snake* snake;
+static Tile** body;
 
 static Tile*** tiles;
 
 void setUpSnake(void)
 {
-    game = allocateGame(5, 5);
+    game = allocateGame(3, 3);
 
     grid = gameGrid(game);
     snake = gameSnake(game);
+    body = snakeBody(snake);
 
     tiles = gridTiles(grid);
 }
@@ -95,6 +97,83 @@ void Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Right_When_Curren
     TEST_ASSERT_EQUAL(LEFT, snakeDirection(snake));
 }
 
+void Snake_Should_Shift_Down(void)
+{
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Shift_Right(void)
+{
+    changeSnakeDirection(snake, RIGHT);
+
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[1][1], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Shift_Up(void)
+{
+    changeSnakeDirection(snake, RIGHT);
+    moveSnake(game);
+    changeSnakeDirection(snake, UP);
+
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[1][0], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][1], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Shift_Left(void)
+{
+    changeSnakeDirection(snake, RIGHT);
+    moveSnake(game);
+    changeSnakeDirection(snake, UP);
+    moveSnake(game);
+    changeSnakeDirection(snake, LEFT);
+
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL(tiles[0][0], body[0]);
+    TEST_ASSERT_EQUAL(tiles[1][0], body[1]);
+
+    printGame(game);
+}
+
+void Snake_Should_Eat_Food_If_Next_Tile_Has_Food(void)
+{
+    setTileFood(tiles[0][2], true);
+
+    moveSnake(game);
+
+    TEST_ASSERT_FALSE(tileHasFood(tiles[0][2]));
+
+    printGame(game);
+}
+
+void Snake_Should_Grow_After_Eating_Food_On_Shift(void)
+{
+    setTileFood(tiles[0][2], true);
+
+    moveSnake(game);
+
+    TEST_ASSERT_EQUAL_UINT(3, snakeLength(snake));
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+    TEST_ASSERT_EQUAL(tiles[0][0], body[2]);
+
+    printGame(game);
+}
+
 void Snake_Should_Check_If_It_Contains_Tile(void)
 {
     TEST_ASSERT_TRUE(snakeContainsTile(snake, tiles[0][0]));
@@ -102,17 +181,8 @@ void Snake_Should_Check_If_It_Contains_Tile(void)
     TEST_ASSERT_FALSE(snakeContainsTile(snake, tiles[0][2]));
 }
 
-void Snake_Should_Grow(void)
-{
-    growSnake(snake);
-
-    TEST_ASSERT_EQUAL_UINT(3, snakeLength(snake));
-}
-
 void Snake_Should_Check_If_It_Eats_Itself(void)
 {
-    Tile** const body = snakeBody(snake);
-
     body[0] = body[1];
 
     TEST_ASSERT_TRUE(snakeEatsItself(snake));
@@ -133,9 +203,15 @@ void runSnakeTests(void)
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Up_When_Current_Is_Down);
     RUN_TEST(Snake_Should_Not_Change_Its_Direction_If_New_Direction_Is_Right_When_Current_Is_Left);
 
-    RUN_TEST(Snake_Should_Check_If_It_Contains_Tile);
+    RUN_TEST(Snake_Should_Shift_Down);
+    RUN_TEST(Snake_Should_Shift_Right);
+    RUN_TEST(Snake_Should_Shift_Up);
+    RUN_TEST(Snake_Should_Shift_Left);
 
-    RUN_TEST(Snake_Should_Grow);
+    RUN_TEST(Snake_Should_Eat_Food_If_Next_Tile_Has_Food);
+    RUN_TEST(Snake_Should_Grow_After_Eating_Food_On_Shift);
+
+    RUN_TEST(Snake_Should_Check_If_It_Contains_Tile);
 
     RUN_TEST(Snake_Should_Check_If_It_Eats_Itself);
 }
