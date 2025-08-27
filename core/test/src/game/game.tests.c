@@ -83,6 +83,14 @@ void Game_Should_Not_Place_Food_On_Snake_Body(void)
     freeGame(game);
 }
 
+void Game_Should_Move_Snake_On_Update(void)
+{
+    updateGame(game);
+
+    TEST_ASSERT_EQUAL(tiles[0][2], body[0]);
+    TEST_ASSERT_EQUAL(tiles[0][1], body[1]);
+}
+
 void Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One_On_Update(void)
 {
     Game* const game = allocateGame(2, 3, 3);
@@ -153,6 +161,7 @@ void runGameTests(void)
 
     RUN_TEST(Game_Should_Not_Place_Food_On_Snake_Body);
 
+    RUN_TEST(Game_Should_Move_Snake_On_Update);
     RUN_TEST(Game_Should_Randomly_Place_Next_Food_After_Snake_Eats_One_On_Update);
     RUN_TEST(Game_Should_Finish_If_Snake_Ate_All_Food_On_Update);
     RUN_TEST(Game_Should_Finish_If_Snake_Eats_Itself_On_Update);

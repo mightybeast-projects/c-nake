@@ -83,7 +83,7 @@ void updateGame(Game* const game)
     if (game->isFinished)
         return;
 
-    const Snake* const snake = game->snake;
+    Snake* const snake = game->snake;
 
     moveSnake(snake);
 
@@ -96,7 +96,7 @@ void updateGame(Game* const game)
         return;
     }
 
-    if (!game->isFinished && !foodTile(game))
+    if (!game->isFinished)
         placeRandomFood(game, game->seed);
 }
 
