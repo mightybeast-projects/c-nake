@@ -1,22 +1,14 @@
 #include "config.h"
 #include "game-widget.h"
+#include "grid-widget.h"
 #include "raylib.h"
 #include "tile-widget.h"
 #include "time.h"
 
-static Game* game;
-
 void main(void)
 {
-    const GameParams params = { COLS, ROWS, time(NULL) };
-    game = allocateGame(params);
-
-    GameWidget* const widget = allocateGameWidget(game);
-
-    Tile* const tile = gridTiles(gameGrid(game))[0][0];
-    const Rectangle rect = { 0, 0, 20, 20 };
-
-    TileWidget* const tileWidget = allocateTileWidget(tile, rect);
+    Grid* const grid = allocateGrid(COLS, ROWS);
+    GridWidget* const widget = allocateGridWidget(grid);
 
     InitWindow(WIDTH, WIDTH, "C-nake");
     SetTargetFPS(60);
@@ -27,12 +19,12 @@ void main(void)
         ClearBackground(color);
         BeginDrawing();
 
-        drawTileWidget(tileWidget);
+        drawGridWidget(widget);
 
         EndDrawing();
     }
 
     CloseWindow();
 
-    freeGameWidget(widget);
+    freeGridWidget(widget);
 }
