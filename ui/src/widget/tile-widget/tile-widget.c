@@ -23,9 +23,10 @@ void freeTileWidget(TileWidget* const widget)
     free(widget);
 }
 
-void drawTileWidget(const TileWidget* const widget)
+void drawTileWidget(const TileWidget* const widget, const Color color)
 {
-    Color color = { 75, 75, 75, 255 };
+    if (!widget->tile)
+        return;
 
     DrawRectangleRounded(widget->rect, 0.1, 10, color);
 }

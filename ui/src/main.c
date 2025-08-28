@@ -2,13 +2,17 @@
 #include "game-widget.h"
 #include "grid-widget.h"
 #include "raylib.h"
+#include "snake-widget.h"
 #include "tile-widget.h"
 #include "time.h"
 
 void main(void)
 {
     Grid* const grid = allocateGrid(COLS, ROWS);
-    GridWidget* const widget = allocateGridWidget(grid);
+    Snake* const snake = allocateSnake(grid);
+
+    GridWidget* const gridWidget = allocateGridWidget(grid);
+    SnakeWidget* const snakeWidget = allocateSnakeWidget(snake);
 
     InitWindow(WIDTH, WIDTH, "C-nake");
     SetTargetFPS(60);
@@ -19,12 +23,14 @@ void main(void)
         ClearBackground(color);
         BeginDrawing();
 
-        drawGridWidget(widget);
+        drawGridWidget(gridWidget);
+        drawSnakeWidget(snakeWidget);
 
         EndDrawing();
     }
 
     CloseWindow();
 
-    freeGridWidget(widget);
+    freeGridWidget(gridWidget);
+    freeSnakeWidget(snakeWidget);
 }

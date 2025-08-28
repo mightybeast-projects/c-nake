@@ -39,12 +39,9 @@ void freeGridWidget(GridWidget* const widget)
 
 void drawGridWidget(const GridWidget* const widget)
 {
-    const unsigned width = gridWidth(widget->grid);
-    const unsigned height = gridHeight(widget->grid);
-
-    for (int i = 0; i < width; i++)
-        for (int j = 0; j < height; j++)
-            drawTileWidget(widget->tilesWidgets[i][j]);
+    for (int i = 0; i < gridWidth(widget->grid); i++)
+        for (int j = 0; j < gridHeight(widget->grid); j++)
+            drawTileWidget(widget->tilesWidgets[i][j], (Color) { 75, 75, 75, 255 });
 }
 
 static TileWidget*** allocateTilesWidgets(Grid* const grid)
@@ -54,17 +51,17 @@ static TileWidget*** allocateTilesWidgets(Grid* const grid)
 
     TileWidget*** const tilesWidgets = safeMalloc(sizeof(TileWidget**) * width);
 
-    const float margin = 2;
+    const float margin = 5;
     const float size = (WIDTH - (width - 1) * margin - margin * 2) / width;
 
     for (int i = 0; i < width; i++) {
         tilesWidgets[i] = safeMalloc(sizeof(TileWidget*) * height);
 
         for (int j = 0; j < height; j++) {
-            float x = i * (size + margin) + margin;
-            float y = j * (size + margin) + margin;
-            Rectangle rect = { x, y, size, size };
-            Tile* tile = gridTiles(grid)[i][j];
+            const float x = i * (size + margin) + margin;
+            const float y = j * (size + margin) + margin;
+            const Rectangle rect = { x, y, size, size };
+            Tile* const tile = gridTiles(grid)[i][j];
 
             tilesWidgets[i][j] = allocateTileWidget(tile, rect);
         }
