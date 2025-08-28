@@ -1,0 +1,4 @@
+void tmp(void)
+{
+    return;
+}
