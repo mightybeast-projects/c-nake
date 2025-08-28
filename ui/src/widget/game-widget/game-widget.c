@@ -8,7 +8,7 @@ struct GameWidget
 
 GameWidget* allocateGameWidget(Game* const game)
 {
-    GameWidget* widget = safeMalloc(sizeof(struct GameWidget));
+    GameWidget* const widget = safeMalloc(sizeof(struct GameWidget));
 
     widget->game = game;
 

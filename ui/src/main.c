@@ -14,6 +14,13 @@ void main(void)
     GridWidget* const gridWidget = allocateGridWidget(grid);
     SnakeWidget* const snakeWidget = allocateSnakeWidget(snake);
 
+    changeSnakeDirection(snake, RIGHT);
+    moveSnake(snake);
+    moveSnake(snake);
+    moveSnake(snake);
+
+    updateSnakeWidget(snakeWidget);
+
     InitWindow(WIDTH, WIDTH, "C-nake");
     SetTargetFPS(60);
 

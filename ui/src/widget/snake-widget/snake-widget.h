@@ -5,4 +5,6 @@ typedef struct SnakeWidget SnakeWidget;
 SnakeWidget* allocateSnakeWidget(Snake* const snake);
 void freeSnakeWidget(SnakeWidget* const widget);
 
+void updateSnakeWidget(SnakeWidget* const widget);
+
 void drawSnakeWidget(const SnakeWidget* const widget);

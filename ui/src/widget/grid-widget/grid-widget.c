@@ -13,7 +13,7 @@ static TileWidget*** allocateTilesWidgets(Grid* const grid);
 
 GridWidget* allocateGridWidget(Grid* const grid)
 {
-    GridWidget* widget = safeMalloc(sizeof(struct GridWidget));
+    GridWidget* const widget = safeMalloc(sizeof(struct GridWidget));
 
     widget->grid = grid;
     widget->tilesWidgets = allocateTilesWidgets(grid);
@@ -51,20 +51,11 @@ static TileWidget*** allocateTilesWidgets(Grid* const grid)
 
     TileWidget*** const tilesWidgets = safeMalloc(sizeof(TileWidget**) * width);
 
-    const float margin = 5;
-    const float size = (WIDTH - (width - 1) * margin - margin * 2) / width;
-
     for (int i = 0; i < width; i++) {
         tilesWidgets[i] = safeMalloc(sizeof(TileWidget*) * height);
 
-        for (int j = 0; j < height; j++) {
-            const float x = i * (size + margin) + margin;
-            const float y = j * (size + margin) + margin;
-            const Rectangle rect = { x, y, size, size };
-            Tile* const tile = gridTiles(grid)[i][j];
-
-            tilesWidgets[i][j] = allocateTileWidget(tile, rect);
-        }
+        for (int j = 0; j < height; j++)
+            tilesWidgets[i][j] = allocateTileWidget(gridTiles(grid)[i][j]);
     }
 
     return tilesWidgets;

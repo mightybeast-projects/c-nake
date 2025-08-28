@@ -32,10 +32,21 @@ void freeSnakeWidget(SnakeWidget* const widget)
     free(widget);
 }
 
+void updateSnakeWidget(SnakeWidget* const widget)
+{
+    for (int i = 0; i < snakeLength(widget->snake); i++) {
+        TileWidget* const tileWidget = widget->bodyTilesWidgets[i];
+        Tile* const tile = snakeBody(widget->snake)[i];
+
+        setTileWidgetTile(tileWidget, tile);
+        calculateTileWidgetRect(tileWidget);
+    }
+}
+
 void drawSnakeWidget(const SnakeWidget* const widget)
 {
     for (int i = 0; i < snakeLength(widget->snake); i++)
-        drawTileWidget(widget->bodyTilesWidgets[i], RED);
+        drawTileWidget(widget->bodyTilesWidgets[i], GREEN);
 }
 
 static TileWidget** allocateBodyTilesWidgets(Snake* const snake)
@@ -45,18 +56,8 @@ static TileWidget** allocateBodyTilesWidgets(Snake* const snake)
 
     TileWidget** const widgets = safeMalloc(sizeof(TileWidget**) * length);
 
-    const unsigned width = gridWidth(snakeGrid(snake));
-    const float margin = 5;
-    const float size = (WIDTH - (width - 1) * margin - margin * 2) / width;
-
-    for (int i = 0; i < length; i++) {
-        const Tile* const tile = body[i];
-        const float x = tileI(tile) * (size + margin) + margin;
-        const float y = tileJ(tile) * (size + margin) + margin;
-        const Rectangle rect = { x, y, size, size };
-
-        widgets[i] = allocateTileWidget(body[i], rect);
-    }
+    for (int i = 0; i < length; i++)
+        widgets[i] = allocateTileWidget(body[i]);
 
     return widgets;
 }
