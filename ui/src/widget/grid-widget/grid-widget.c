@@ -33,7 +33,6 @@ void freeGridWidget(GridWidget* const widget)
     }
 
     free(tilesWidgets);
-    freeGrid(widget->grid);
     free(widget);
 }
 

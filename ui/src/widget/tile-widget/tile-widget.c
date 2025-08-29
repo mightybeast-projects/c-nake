@@ -21,7 +21,6 @@ TileWidget* allocateTileWidget(Tile* const tile)
 
 void freeTileWidget(TileWidget* const widget)
 {
-    freeTile(widget->tile);
     free(widget);
 }
 

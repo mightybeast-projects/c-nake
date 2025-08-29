@@ -28,7 +28,6 @@ void freeSnakeWidget(SnakeWidget* const widget)
         freeTileWidget(widget->bodyTilesWidgets[i]);
 
     free(widget->bodyTilesWidgets);
-    freeSnake(widget->snake);
     free(widget);
 }
 

@@ -3,6 +3,7 @@
 #include "grid-widget.h"
 #include "raylib.h"
 #include "snake-widget.h"
+#include "stdio.h"
 #include "tile-widget.h"
 #include "time.h"
 
@@ -18,7 +19,18 @@ void main(void)
 
     Color color = { 46, 46, 46, 255 };
 
+    unsigned dt = 0;
+
     while (!WindowShouldClose()) {
+        handleMovementKeys(widget);
+
+        if (dt >= 20) {
+            updateGameWidget(widget);
+            dt = 0;
+        }
+
+        dt++;
+
         ClearBackground(color);
         BeginDrawing();
 
@@ -29,6 +41,6 @@ void main(void)
 
     CloseWindow();
 
-    freeGame(game);
     freeGameWidget(widget);
+    freeGame(game);
 }

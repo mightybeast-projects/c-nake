@@ -1,5 +1,6 @@
 #include "game-widget.h"
 #include "grid-widget.h"
+#include "raylib.h"
 #include "safe-memory.h"
 #include "snake-widget.h"
 
@@ -23,8 +24,28 @@ GameWidget* allocateGameWidget(Game* const game)
 
 void freeGameWidget(GameWidget* const widget)
 {
-    freeGame(widget->game);
     free(widget);
+}
+
+void handleMovementKeys(GameWidget* const widget)
+{
+    Snake* const snake = gameSnake(widget->game);
+
+    if (IsKeyDown(KEY_W))
+        changeSnakeDirection(snake, UP);
+    if (IsKeyDown(KEY_S))
+        changeSnakeDirection(snake, DOWN);
+    if (IsKeyDown(KEY_A))
+        changeSnakeDirection(snake, LEFT);
+    if (IsKeyDown(KEY_D))
+        changeSnakeDirection(snake, RIGHT);
+}
+
+void updateGameWidget(GameWidget* const widget)
+{
+    moveSnake(gameSnake(widget->game));
+
+    updateSnakeWidget(widget->snakeWidget);
 }
 
 void drawGameWidget(GameWidget* const widget)
