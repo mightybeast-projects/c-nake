@@ -9,7 +9,7 @@
 
 void main(void)
 {
-    const GameParams params = { COLS, ROWS, 1 };
+    const GameParams params = { COLS, ROWS, time(NULL) };
     Game* const game = allocateGame(params);
 
     GameWidget* const widget = allocateGameWidget(game);

@@ -2,10 +2,10 @@
 #include "mersenne-twister.h"
 #include "safe-memory.h"
 #include "stdio.h"
+#include "time.h"
 
 struct Game
 {
-    unsigned seed;
     bool isFinished;
     Grid* grid;
     Snake* snake;
@@ -19,7 +19,6 @@ Game* allocateGame(const GameParams params)
 {
     Game* const game = safeMalloc(sizeof(struct Game));
 
-    game->seed = params.seed;
     game->isFinished = false;
     game->grid = allocateGrid(params.cols, params.rows);
     game->snake = allocateSnake(game->grid);
@@ -97,8 +96,8 @@ void updateGame(Game* const game)
         return;
     }
 
-    if (!game->isFinished)
-        placeRandomFood(game, game->seed);
+    if (!foodTile(game) && !game->isFinished)
+        placeRandomFood(game, time(NULL));
 }
 
 void printGame(const Game* const game)

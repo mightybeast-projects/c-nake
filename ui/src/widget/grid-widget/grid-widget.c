@@ -44,7 +44,7 @@ void drawGridWidget(const GridWidget* const widget)
             TileWidget* const tileWidget = widget->tilesWidgets[i][j];
 
             if (tileHasFood(tile))
-                drawTileWidget(tileWidget, RED);
+                drawTileWidget(tileWidget, ORANGE);
             else
                 drawTileWidget(tileWidget, (Color) { 75, 75, 75, 255 });
         }
