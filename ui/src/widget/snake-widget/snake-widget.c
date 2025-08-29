@@ -54,12 +54,16 @@ void drawSnakeWidget(const SnakeWidget* const widget)
         TileWidget* const tileWidget = widget->bodyTilesWidgets[i];
         Tile* const tile = body[i];
 
+        Color color;
+
         if (snakeHead(widget->snake) == tile)
-            drawTileWidget(tileWidget, (Color) { 13, 250, 0, 255 });
+            color = (Color) { 13, 250, 0, 255 };
         else if (snakeTail(widget->snake) == tile)
-            drawTileWidget(tileWidget, (Color) { 11, 163, 0, 255 });
+            color = (Color) { 11, 160, 0, 255 };
         else
-            drawTileWidget(tileWidget, (Color) { 13, 191, 0, 255 });
+            color = (Color) { 13, 190, 0, 255 };
+
+        drawTileWidget(tileWidget, color);
     }
 }
 

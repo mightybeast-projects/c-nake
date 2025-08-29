@@ -1,4 +1,5 @@
 #include "game-widget.h"
+#include "config.h"
 #include "grid-widget.h"
 #include "raylib.h"
 #include "safe-memory.h"
