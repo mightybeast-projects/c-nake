@@ -1,4 +1,4 @@
 #define WIDTH 500
 
-#define COLS 15
-#define ROWS 15
+#define COLS 10
+#define ROWS 10

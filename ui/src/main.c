@@ -24,8 +24,10 @@ void main(void)
     while (!WindowShouldClose()) {
         handleMovementKeys(widget);
 
-        if (dt >= 20) {
+        if (dt >= 8) {
             updateGameWidget(widget);
+            printGame(game);
+
             dt = 0;
         }
 

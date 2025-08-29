@@ -43,7 +43,7 @@ void handleMovementKeys(GameWidget* const widget)
 
 void updateGameWidget(GameWidget* const widget)
 {
-    moveSnake(gameSnake(widget->game));
+    updateGame(widget->game);
 
     updateSnakeWidget(widget->snakeWidget);
 }

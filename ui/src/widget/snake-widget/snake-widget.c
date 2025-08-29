@@ -34,8 +34,12 @@ void freeSnakeWidget(SnakeWidget* const widget)
 void updateSnakeWidget(SnakeWidget* const widget)
 {
     for (int i = 0; i < snakeLength(widget->snake); i++) {
-        TileWidget* const tileWidget = widget->bodyTilesWidgets[i];
         Tile* const tile = snakeBody(widget->snake)[i];
+
+        if (widget->bodyTilesWidgets[i] == NULL)
+            widget->bodyTilesWidgets[i] = allocateTileWidget(tile);
+
+        TileWidget* const tileWidget = widget->bodyTilesWidgets[i];
 
         setTileWidgetTile(tileWidget, tile);
         calculateTileWidgetRect(tileWidget);
@@ -44,19 +48,35 @@ void updateSnakeWidget(SnakeWidget* const widget)
 
 void drawSnakeWidget(const SnakeWidget* const widget)
 {
-    for (int i = 0; i < snakeLength(widget->snake); i++)
-        drawTileWidget(widget->bodyTilesWidgets[i], GREEN);
+    Tile** const body = snakeBody(widget->snake);
+
+    for (int i = 0; i < snakeLength(widget->snake); i++) {
+        TileWidget* const tileWidget = widget->bodyTilesWidgets[i];
+        Tile* const tile = body[i];
+
+        if (snakeHead(widget->snake) == tile)
+            drawTileWidget(tileWidget, (Color) { 13, 250, 0, 255 });
+        else if (snakeTail(widget->snake) == tile)
+            drawTileWidget(tileWidget, (Color) { 11, 163, 0, 255 });
+        else
+            drawTileWidget(tileWidget, (Color) { 13, 191, 0, 255 });
+    }
 }
 
 static TileWidget** allocateBodyTilesWidgets(Snake* const snake)
 {
     const unsigned length = snakeLength(snake);
     Tile** const body = snakeBody(snake);
+    Grid* const grid = snakeGrid(snake);
+    const unsigned width = gridWidth(grid);
+    const unsigned height = gridHeight(grid);
 
-    TileWidget** const widgets = safeMalloc(sizeof(TileWidget**) * length);
+    TileWidget** const widgets = safeMalloc(sizeof(TileWidget*) * width * height);
 
     for (int i = 0; i < length; i++)
         widgets[i] = allocateTileWidget(body[i]);
+    for (int i = length; i < width * height; i++)
+        widgets[i] = NULL;
 
     return widgets;
 }

@@ -38,9 +38,17 @@ void freeGridWidget(GridWidget* const widget)
 
 void drawGridWidget(const GridWidget* const widget)
 {
-    for (int i = 0; i < gridWidth(widget->grid); i++)
-        for (int j = 0; j < gridHeight(widget->grid); j++)
-            drawTileWidget(widget->tilesWidgets[i][j], (Color) { 75, 75, 75, 255 });
+    for (int i = 0; i < gridWidth(widget->grid); i++) {
+        for (int j = 0; j < gridHeight(widget->grid); j++) {
+            Tile* const tile = gridTiles(widget->grid)[i][j];
+            TileWidget* const tileWidget = widget->tilesWidgets[i][j];
+
+            if (tileHasFood(tile))
+                drawTileWidget(tileWidget, RED);
+            else
+                drawTileWidget(tileWidget, (Color) { 75, 75, 75, 255 });
+        }
+    }
 }
 
 static TileWidget*** allocateTilesWidgets(Grid* const grid)
