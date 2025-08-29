@@ -8,18 +8,10 @@
 
 void main(void)
 {
-    Grid* const grid = allocateGrid(COLS, ROWS);
-    Snake* const snake = allocateSnake(grid);
+    const GameParams params = { COLS, ROWS, 1 };
+    Game* const game = allocateGame(params);
 
-    GridWidget* const gridWidget = allocateGridWidget(grid);
-    SnakeWidget* const snakeWidget = allocateSnakeWidget(snake);
-
-    changeSnakeDirection(snake, RIGHT);
-    moveSnake(snake);
-    moveSnake(snake);
-    moveSnake(snake);
-
-    updateSnakeWidget(snakeWidget);
+    GameWidget* const widget = allocateGameWidget(game);
 
     InitWindow(WIDTH, WIDTH, "C-nake");
     SetTargetFPS(60);
@@ -30,14 +22,13 @@ void main(void)
         ClearBackground(color);
         BeginDrawing();
 
-        drawGridWidget(gridWidget);
-        drawSnakeWidget(snakeWidget);
+        drawGameWidget(widget);
 
         EndDrawing();
     }
 
     CloseWindow();
 
-    freeGridWidget(gridWidget);
-    freeSnakeWidget(snakeWidget);
+    freeGame(game);
+    freeGameWidget(widget);
 }
