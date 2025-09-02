@@ -9,59 +9,74 @@
 
 static Game* game;
 static GameWidget* widget;
+static unsigned dt = 0;
 
 static void createGame(void);
+static void updateGameFrame(void);
+static void checkForRestart(void);
+static void advanceGame(void);
 static void drawRestartMessage(void);
-static void deleteGame();
+static void deleteGame(void);
 
 void main(void)
 {
+    createGame();
+
     InitWindow(WIDTH, WIDTH, "C-nake");
     SetTargetFPS(60);
 
-    createGame();
-
-    const Color color = { 46, 46, 46, 255 };
-
-    unsigned dt = 0;
-
-    while (!WindowShouldClose()) {
-        if (gameIsFinished(game) && IsKeyPressed(KEY_R)) {
-            deleteGame();
-            createGame();
-        }
-
-        handleMovementKeys(widget);
-
-        if (dt >= 8) {
-            updateGameWidget(widget);
-
-            dt = 0;
-        }
-
-        dt++;
-
-        ClearBackground(color);
-        BeginDrawing();
-
-        drawGameWidget(widget);
-
-        if (gameIsFinished(game))
-            drawRestartMessage();
-
-        EndDrawing();
-    }
-
-    deleteGame();
+    while (!WindowShouldClose())
+        updateGameFrame();
 
     CloseWindow();
+
+    deleteGame();
 }
 
 static void createGame(void)
 {
     const GameParams params = { COLS, ROWS, time(NULL) };
+
     game = allocateGame(params);
     widget = allocateGameWidget(game);
+}
+
+static void updateGameFrame(void)
+{
+    checkForRestart();
+    handleMovementKeys(widget);
+    advanceGame();
+
+    const Color color = { 46, 46, 46, 255 };
+    ClearBackground(color);
+
+    BeginDrawing();
+
+    drawGameWidget(widget);
+
+    if (gameIsFinished(game))
+        drawRestartMessage();
+
+    EndDrawing();
+}
+
+static void checkForRestart(void)
+{
+    if (gameIsFinished(game) && IsKeyPressed(KEY_R)) {
+        deleteGame();
+        createGame();
+    }
+}
+
+static void advanceGame(void)
+{
+    if (dt >= 8) {
+        updateGameWidget(widget);
+
+        dt = 0;
+    }
+
+    dt++;
 }
 
 static void drawRestartMessage(void)
